@@ -13,6 +13,7 @@ Ansible Roles for interacting with the Red Hat Satellite API, combining differen
 
 * The use cases supported by the roles should be beneficial for many users.
 * Input variables externalized in `defaults` folder of roles for easy reuse.
+* The roles README should specify the supported Satellite version(s).
 * The roles should be compatible with the currently (upstream) supported Ansible versions, 2.7+ at the time of writing.
 * The roles should be compatible with any Python supported by Ansible upstream (2.7, 3.5, 3.6, 3.7 at the time of writing), however, roles usually don’t require any special Python features (in contrast to modules).
 * The roles should be compatible with the latest released version of the [FAM](https://github.com/theforeman/foreman-ansible-modules) collection (0.3.0 at the time of writing). While defining a dependency on an older FAM release is possible, it is discouraged.
