@@ -19,7 +19,7 @@ Ansible Roles for interacting with the Red Hat Satellite API, combining differen
 * The roles should be compatible with the latest released version of the [FAM](https://github.com/theforeman/foreman-ansible-modules) collection (0.3.0 at the time of writing). While defining a dependency on an older FAM release is possible, it is discouraged.
 * The roles shall not use hammer via command/shell or the uri module to talk to the API directly.
 * The roles should not duplicate functionality of other existing roles in the same repository.
-* The roles should be in the form that is ready to be pushed to Galaxy.
+* The roles should have proper metadata (similar to the roles in Galaxy).
 
 ## Removal of roles
 The moderators of this project reserve the right to remove any roles that are captured by a role contributed to [FAM](https://github.com/theforeman/foreman-ansible-modules).
