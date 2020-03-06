@@ -1,0 +1,3 @@
+[submodule "redhat-satellite-quickstart"]
+	path = redhat-satellite-quickstart
+	url = https://github.com/flyemsafe/redhat-satellite-quickstart.git
