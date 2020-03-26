@@ -1,0 +1,21 @@
+galaxy_info:
+  author: John Berninger
+  description: Enable / disable Red Hat CDN repos on Satellite 6.x
+  company: Red Hat
+
+  license: GPL-2.0-or-later
+
+  min_ansible_version: 2.4
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+    - 8
+
+  galaxy_tags: 
+    - satellite
+
+collections: 
+  - theforeman.foreman
+  

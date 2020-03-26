@@ -1,0 +1,13 @@
+---
+# tasks file for sat6_redhat_repos
+- name: Ensure the specified CDN repositories are enabled
+  katello_repository_set:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    label: "{{ item.label }}"
+    repositories: "{{ item.repositories | default ([{}]) }}"
+    organization: "{{ organization }}"
+    state: enabled
+  loop: "{{ cdn_repos }}"

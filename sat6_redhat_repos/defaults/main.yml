@@ -1,0 +1,17 @@
+---
+# defaults file for sat6_redhat_repos
+satellite_user: admin
+satellite_password: admin
+satellite_host: satellite.example.com
+cdn_repos:
+  - label: rhel-7-server-rpms
+    repositories:
+      - releasever: "7Server"
+        basearch: "x86_64"
+  - label: rhel-8-for-x86_64-baseos-rpms
+    repositories:
+      - releasever: "8"
+  - label: rhel-8-for-x86_64-appstream-rpms
+    repositories:
+      - releasever: "8"
+
