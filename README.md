@@ -22,3 +22,6 @@ Ansible Roles for interacting with the Red Hat Satellite API, combining differen
 
 ## Removal of roles
 The moderators of this project reserve the right to remove any roles that are captured by a role contributed to [FAM](https://github.com/theforeman/foreman-ansible-modules).
+
+## List of Roles contributed by the community
+See [Roles](Roles.md)
