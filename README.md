@@ -2,7 +2,7 @@
 ### Note: This collection is not officially supported by Red Hat.
 
 
-Ansible Roles, Playbooks (and Tower Configuration metadata) for installing, configuring and interacting with the Red Hat Satellite. The roles will be created using [foreman-ansible-modules] where possible(https://github.com/theforeman/foreman-ansible-modules) (FAM).
+Ansible Roles, Playbooks (and Tower Configuration metadata) for installing, configuring and interacting with the Red Hat Satellite. The roles will be created using [foreman-ansible-modules] (https://github.com/theforeman/foreman-ansible-modules) (FAM) where possible.
 
 # Contribution Guidelines
 
@@ -15,8 +15,8 @@ Ansible Roles, Playbooks (and Tower Configuration metadata) for installing, conf
 * The roles written in this collection should be extensible, reusable and idempotent.
 * The input variables should be externalized in the `defaults` directory of the roles allowing for easy reuse.
 * The variables that are required by the role but not required by user to be modified, should reside in `vars` directory.
-* The roles should be compatible with the current (upstream) supported Ansible versions, 2.9+(?) at the time of writing.
-* The roles should be compatible with any Python supported by Ansible upstream (2.7(?), 3.5, 3.6, 3.7 at the time of writing), however, roles usually don’t require any special Python features (in contrast to modules).
+* The roles should be compatible with the current (upstream) supported Ansible versions, 2.9+ at the time of writing.
+* The roles should be compatible with any Python supported by Ansible upstream (2.7, 3.5, 3.6, 3.7 at the time of writing), however, roles usually don’t require any special Python features (in contrast to modules).
 * The roles should be compatible with the latest released version of the [FAM](https://github.com/theforeman/foreman-ansible-modules) collection (v1.0.1 at the time of writing). While defining a dependency on an older FAM release is possible, it is discouraged.
 * The roles should attempt to not use `command`, `shell`, or `raw` Ansible modules unless there is no other solution.
 * The roles should not use hammer via command/shell or the uri module to talk to the API directly.
