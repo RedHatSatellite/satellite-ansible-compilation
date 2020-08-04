@@ -1,0 +1,15 @@
+# tasks file for rhsm
+- name: main | clean repos
+  import_tasks: 1_clean_repos.yml
+
+- name: main | rhsm subscribe
+  import_tasks: 2_rhsm_subscribe.yml
+  when: satellite_rhn_connect != 'disconnect'
+
+- name: main | create local repo
+  import_tasks: 3_create_local_repo.yml
+  when: satellite_rhn_connect == 'disconnect'
+
+- name: main | enable repo
+  import_tasks: 4_enable_repo.yml
+  when: satellite_rhn_connect != 'disconnect'

@@ -1,0 +1,9 @@
+# tasks file for content
+- name: main | upload manifest
+  import_tasks: 1_manifest.yml
+
+- name: main | enable repos
+  import_tasks: 2_enablerepos.yml
+
+- name: main | synchronize repos
+  import_tasks: 3_repo_sync.yml

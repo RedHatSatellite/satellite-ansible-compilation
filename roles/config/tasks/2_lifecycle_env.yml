@@ -1,0 +1,11 @@
+- name: "config lifecycle env | create a lifecycle environment (Production)"
+  oasis_roles.satellite.lifecycle_environment:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ satellite_prod_lifecycle_env }}"
+    label: "{{ satellite_prod_lifecycle_env }}"
+    description: "{{ satellite_prod_lifecycle_env }}"
+    prior: "Library"
+    organization: "{{ satellite_organization }}"
+    state: "present"

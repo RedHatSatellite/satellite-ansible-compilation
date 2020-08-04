@@ -1,0 +1,34 @@
+- name: repo sync | get all repositories
+  oasis_roles.satellite.resource_info:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    resource: repositories
+  register: repositories
+
+- name: repo sync | Kick off repository sync tasks
+  oasis_roles.satellite.repository_sync:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    product: "{{ item.product.name }}"
+    repository: "{{ item.name }}"
+    organization: "{{ satellite_organization }}"
+  loop: "{{ repositories.resources }}"
+  when: item.url  # Not all repositories have a URL
+  async: 999999
+  poll: 0
+  register: repo_sync_sleeper
+
+- name: repo sync | Wait until all syncs have finished
+  async_status:
+    jid: "{{ repo_sync_sleeper_item.ansible_job_id }}"
+  loop: "{{ repo_sync_sleeper.results }}"
+  loop_control:
+    loop_var: repo_sync_sleeper_item
+  # Skip items that were skipped in the previous task
+  when: repo_sync_sleeper_item.ansible_job_id is defined
+  register: async_job_result
+  until: async_job_result.finished
+  retries: 999
+  delay: 10

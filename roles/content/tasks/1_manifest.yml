@@ -1,0 +1,29 @@
+- name: manifest | pull down manifest
+  get_url:
+    # yamllint disable-line rule:line-length
+    url: https://subscription.rhsm.redhat.com/subscription/consumers/{{ satellite_manifest_uuid }}/export
+    username: "{{ satellite_rhn_user }}"
+    password: "{{ satellite_rhn_password }}"
+    dest: "{{ satellite_manifest_dest }}"
+    validate_certs: false
+    timeout: 30
+  when: satellite_rhn_connect != 'disconnect'
+
+- name: manifest | copy manifest from local system to remote target
+  copy:
+    src: "{{ satellite_manifest_src }}"
+    dest: "{{ satellite_manifest_dest }}"
+    owner: root
+    group: root
+    mode: 0640
+  when: satellite_rhn_connect == 'disconnect'
+
+- name: manifest | upload the manifest
+  oasis_roles.satellite.subscription_manifest:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    repository_url: "{{ satellite_content_source }}"
+    organization: "{{ satellite_organization }}"
+    state: present
+    manifest_path: "{{ satellite_manifest_dest }}"

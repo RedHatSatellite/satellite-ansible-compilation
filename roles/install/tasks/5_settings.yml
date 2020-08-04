@@ -1,0 +1,18 @@
+- name: satellite settings | common settings
+  oasis_roles.satellite.setting:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  with_items:
+    - "{{ satellite_settings }}"
+
+- name: satellite settings | disconnected settings
+  oasis_roles.satellite.setting:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "content_disconnected"
+    value: "true"
+  when: satellite_rhn_connect == 'disconnect'

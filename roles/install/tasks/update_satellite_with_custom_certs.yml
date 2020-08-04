@@ -1,0 +1,21 @@
+- name: update satellite with custom certs | validate custom certificate bundle
+  # noqa 301 305
+  shell: >-
+    katello-certs-check -c {{ satellite_certs_server_cert }}
+    -p {{ satellite_certs_server_key }}
+    -b {{ satellite_certs_server_ca_cert }}
+  register: check_certs
+  failed_when: ("[FAIL]" in check_certs.stdout)
+
+- name: update_satellite_with_custom_certs |
+    update satellite to use custom certificates
+  # noqa 305
+  shell: >-
+    satellite-installer
+    --certs-server-cert {{ satellite_certs_server_cert }}
+    --certs-server-key {{ satellite_certs_server_key }}
+    --certs-server-ca-key {{ satellite_certs_server_ca_cert }}
+    --certs-update-server
+    --certs-update-server-ca
+  register: update_satellite_with_custom_certs
+  when: ("Validation succeeded" in check_certs.stdout)

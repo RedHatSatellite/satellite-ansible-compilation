@@ -1,0 +1,66 @@
+# defaults file for content
+satellite_admin_username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+satellite_admin_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+satellite_organization: "{{ lookup('env', 'SATELLITE_ORGANIZATION') }}"
+satellite_location: "{{ lookup('env', 'SATELLITE_LOCATION') }}"
+satellite_server_url: "https://{{ ansible_fqdn }}"
+satellite_rhn_user: "{{ lookup('env', 'SATELLITE_RHN_USER') }}"
+satellite_rhn_password: "{{ lookup('env', 'SATELLITE_RHN_PASSWORD') }}"
+satellite_rhn_connect: "{{ lookup('env', 'SATELLITE_RHN_CONNECT') }}"
+satellite_manifest_src: "{{ lookup('env','SATELLITE_MANIFEST_NAME') }}"
+satellite_manifest_dest: "/opt/satellite_manifest.zip"
+satellite_version: "{{ lookup('env', 'SATELLITE_VERSION') | mandatory }}"
+satellite_rhelver: "{{ lookup('env', 'SATELLITE_RHELVER') | mandatory }}"
+satellite_server_basearch: "x86_64"
+satellite_manifest_uuid: "{{ lookup('env', 'SATELLITE_MANIFEST_UUID') }}"
+# yamllint disable-line rule:line-length
+satellite_content_source: "{{ lookup('env', 'SATELLITE_CONTENT_SOURCE'| default('https://cdn.redhat.com')) }}"
+
+satellite_rhel7_product:
+  - name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+    label: rhel-7-server-rpms
+    repos:
+      - releasever: "{{ satellite_rhelver }}"
+        basearch: "{{ satellite_server_basearch }}"
+
+# - name: "Red Hat Enterprise Linux 7 Server - RH Common (RPMs)"
+#    label: rhel-7-server-rh-common-rpms
+#    repos:
+#      - releasever: "7Server"
+#        basearch: "{{ satellite_server_basearch }}"
+
+# - name: "Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)"
+#    label: rhel-7-server-supplementary-rpms
+#    repos:
+#      - releasever: "7Server"
+#        basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - Optional (RPMs)"
+    label: rhel-7-server-optional-rpms
+    repos:
+      - releasever: "{{ satellite_rhelver }}"
+        basearch: "{{ satellite_server_basearch }}"
+
+  # yamllint disable-line rule:line-length
+  - name: "Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server x86_64 {{ satellite_rhelver }}"
+    label: rhel-server-rhscl-7-rpms
+    repos:
+      - releasever: "{{ satellite_rhelver }}"
+        basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - Extras (RPMs)"
+    label: rhel-7-server-extras-rpms
+    repos:
+      - basearch: "{{ satellite_server_basearch }}"
+
+  # yamllint disable-line rule:line-length
+  - name: "Red Hat Satellite Tools {{ satellite_version }} (for RHEL 7 Server) (RPMs)"
+    label: rhel-7-server-satellite-tools-{{ satellite_version }}-rpms
+    repos:
+      - basearch: "{{ satellite_server_basearch }}"
+
+  # yamllint disable-line rule:line-length
+  - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server"
+    label: rhel-7-server-ansible-2.8-rpms
+    repos:
+      - basearch: "{{ satellite_server_basearch }}"

@@ -1,0 +1,12 @@
+- name: config domains | create or update domains
+  oasis_roles.satellite.domain:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    description: "{{ item.description | default(omit) }}"
+    locations: "{{ item.locations }}"
+    organizations: "{{ item.organizations }}"
+    dns_proxy: "{{ satellite_fqdn | default(omit) }}"
+    state: present
+  with_items: "{{ satellite_domains }}"

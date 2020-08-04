@@ -1,0 +1,41 @@
+# tasks file for sat_config
+### content views
+#- name: "config_content_views | remove content views"
+#  oasis_roles.satellite.content_view:
+#    username: "{{ satellite_admin_username }}"
+#    password: "{{ satellite_admin_password }}"
+#    server_url: "{{ satellite_server_url }}"
+#    name: "{{ item.name }}"
+#    organization: "{{ satellite_organization }}"
+#    repositories: "{{ item.repositories }}"
+#    state: absent
+#  with_items: "{{ satellite_content_views }}"
+
+- name: "config content views | Create or update content views"
+  oasis_roles.satellite.content_view:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    organization: "{{ satellite_organization }}"
+    repositories: "{{ item.repositories }}"
+  with_items: "{{ satellite_content_views }}"
+  notify: handler - publish content views
+
+- meta: flush_handlers
+
+- name: "config content views | Create a composite content view"
+  oasis_roles.satellite.content_view:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    organization: "{{ satellite_organization }}"
+    composite: true
+    auto_publish: true
+    components: "{{ item.components }}"
+  with_items: "{{ satellite_composite_content_views }}"
+  notify: handler - publish composite content views
+  when: satellite_composite_content_views is defined
+
+- meta: flush_handlers

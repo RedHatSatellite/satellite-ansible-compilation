@@ -1,0 +1,17 @@
+- name: "config activation keys | Create an Activation key with the created
+    content view"
+  oasis_roles.satellite.activation_key:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    organization: "{{ satellite_organization }}"
+    lifecycle_environment: "{{ item.lifecycle_environment }}"
+    content_view: "{{ item.content_view }}"
+    host_collections: "{{ item.host_collections }}"
+    subscriptions: "{{ item.subscriptions }}"
+    content_overrides: "{{ item.content_overrides }}"
+    #auto_attach: "{{ item.auto_attach }}"
+    #release_version: "{{ item.release_version }}"
+    #service_level: "{{ item.service_level }}"
+  with_items: "{{ satellite_activation_keys }}"
