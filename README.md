@@ -1,4 +1,4 @@
-# Satellite Ansible Collection(devel)
+# Satellite Ansible Compilation
 ### Note: This collection is not officially supported by Red Hat.
 
 
