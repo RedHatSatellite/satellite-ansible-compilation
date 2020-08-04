@@ -1,0 +1,4 @@
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - role: oasis_roles.system.molecule_docker_ci

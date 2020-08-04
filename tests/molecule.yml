@@ -1,0 +1,38 @@
+dependency:
+  name: galaxy
+  options:
+    role-file: ../../requirements.yml  # relative to the role dir
+    requirements-file: ../../requirements.yml
+lint: |
+  set -e
+  yamllint -c ../../tests/yamllint.yml  .  # relative to role dir
+  ansible-lint -R -r ../../tests/ansible_lint_rules -c ../../tests/ansible-lint .
+  find . -name '*.py' -print0 | xargs -l -0 flake8
+provisioner:
+  name: ansible
+  playbooks:  # These paths are relative to scenario dir
+    prepare: ../shared/prepare.yml
+    converge: ../shared/playbook.yml
+    cleanup: ../shared/cleanup.yml
+    docker:
+      create: ../../../../tests/create-docker.yml
+      destroy: ../../../../tests/destroy-docker.yml
+    openstack:
+      create: ../../../../tests/create-openstack.yml
+      destroy: ../../../../tests/destroy-openstack.yml
+  config_options:
+    defaults:
+      stdout_callback: yaml
+      force_color: true
+verifier:
+  name: testinfra
+  options:
+    # Add a -v so you see the individual test names,
+    # particularly useful with parameterized tests
+    v: true
+    junit-xml: junit.xml
+  # Using the shared directory is useful for sharing tests across scenarios,
+  # but is not a requirement. For scenario specific tests, add the appropriate
+  # file path to the test or test directory below
+  additional_files_or_dirs:
+    - ../../shared/tests  # relative to the scenario tests dir

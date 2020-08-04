@@ -1,0 +1,8 @@
+- name: site |  Install Satellite
+  hosts: satellite
+  roles:
+    - role: rhsm
+    - role: yumupdate
+    - role: install
+    - role: content
+    - role: config
