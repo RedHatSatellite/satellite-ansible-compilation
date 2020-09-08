@@ -24,5 +24,5 @@
     content_view: "{{ item.content_view | default(omit) }}"
     puppetclasses: "{{ item.puppetclasses | default(omit) }}"
     parameters: "{{ item.parameters | default(omit) }}"
-    state: present
+    state: "{{ satellite_state }"
   with_items: "{{ satellite_hostgroups }}"
