@@ -8,5 +8,5 @@
     locations: "{{ item.locations }}"
     organizations: "{{ item.organizations }}"
     dns_proxy: "{{ satellite_fqdn | default(omit) }}"
-    state: present
+    state: "{{ satellite_state }"
   with_items: "{{ satellite_domains }}"
