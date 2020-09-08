@@ -1,7 +1,7 @@
 # tasks file for sat_config
 ### host collections
 - name: "config host collections | create PKI host collections"
-  oasis_roles.satellite.host_collection:
+  theforeman.satellite.host_collection:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"
