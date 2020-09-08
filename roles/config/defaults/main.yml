@@ -26,6 +26,7 @@ satellite_operatingsystem: "RedHat {{ satellite_rhelver }}"
 # yamllint disable-line rule:line-length
 satellite_kickstart_repository: "Red Hat Enterprise Linux 7 Server Kickstart x86_64 {{ satellite_rhelver }}"
 satellite_state: "present"
+satellite_auto_publish: "true"
 
 satellite_host_collections:
   - name: KVMHOSTS_HC
