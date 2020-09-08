@@ -1,6 +1,6 @@
 # tasks file for rhsm
 - name: main | clean repos
-  import_tasks: 1_clean_repos.yml
+  import_tasks: 1_cleanrepos.yml
 
 - name: main | rhsm subscribe
   import_tasks: 2_rhsm_subscribe.yml
