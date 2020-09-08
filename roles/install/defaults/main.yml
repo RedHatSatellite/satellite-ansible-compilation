@@ -7,6 +7,7 @@ satellite_server_url: "https://{{ ansible_fqdn }}"
 satellite_hostname: "{{ lookup('env', 'SATELLITE_HOSTNAME' | mandatory) }}"
 satellite_hostip: "{{ lookup('env', 'SATELLITE_HOSTIP' | mandatory) }}"
 satellite_domain: "{{ lookup('env', 'SATELLITE_DOMAIN' | mandatory) }}"
+satellite_scenario: "satellite"
 
 # satellite install role options:
 satellite_options: >-
