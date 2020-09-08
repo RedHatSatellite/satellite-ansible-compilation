@@ -1,5 +1,5 @@
 - name: "config hostgroups | create hostgroups"
-  oasis_roles.satellite.hostgroup:
+  theforeman.satellite.hostgroup:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"
