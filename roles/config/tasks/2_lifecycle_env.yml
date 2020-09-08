@@ -8,4 +8,4 @@
     description: "{{ satellite_prod_lifecycle_env }}"
     prior: "Library"
     organization: "{{ satellite_organization }}"
-    state: "present"
+    state: "{{ satellite_state }"
