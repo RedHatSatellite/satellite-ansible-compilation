@@ -11,7 +11,4 @@
     host_collections: "{{ item.host_collections }}"
     subscriptions: "{{ item.subscriptions }}"
     content_overrides: "{{ item.content_overrides }}"
-    #auto_attach: "{{ item.auto_attach }}"
-    #release_version: "{{ item.release_version }}"
-    #service_level: "{{ item.service_level }}"
   with_items: "{{ satellite_activation_keys }}"
