@@ -1,0 +1,39 @@
+# tasks file for yumupdate
+# TASKS
+- name: yum update | yum-clean-metadata
+  command: yum clean all  # noqa: 301
+  args:
+    warn: false
+
+- name: yum update | Remove unneeded packages
+  package:
+    name: "{{ satellite_remove_pkgs }}"
+    state: absent
+
+- name: yum update | installing secuity Packages
+  package:
+    name: "{{ satellite_add_pkgs }}"
+    state: present
+
+- name: yum update | Check if update is required
+  shell: yum -q check-update > /dev/null  # noqa: 301 303
+  register: patch_lvl
+  failed_when: patch_lvl.rc not in [100,0]
+
+- name:
+  block:
+    - name: yum update | Yum update the system
+      package:
+        name: "*"
+        state: latest  # noqa: 403
+
+    - name: yum update | Reboot on new kernel
+      reboot:
+
+    - name: yum update | Wait 600 seconds for connection to become reachable
+      wait_for_connection:
+
+  when: patch_lvl.rc == 100
+
+- name: yum update | Refreshing Ansible facts
+  setup:

@@ -1,0 +1,9 @@
+# defaults file for yumupdate
+satellite_add_pkgs:
+  - screen
+  - unzip
+  - ipa-client
+  - tmux
+
+satellite_remove_pkgs:
+  - iwl7265-firmware

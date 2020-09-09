@@ -1,0 +1,5 @@
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - role: oasis_roles.system.molecule_openstack_ci
+      molecule_openstack_ci_state: absent

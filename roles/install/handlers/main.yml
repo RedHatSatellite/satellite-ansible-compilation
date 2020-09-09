@@ -1,0 +1,19 @@
+- name: activate_pref_tuning
+  command: satellite-installer
+
+- name: firewalld_reload
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: run_installer
+  command: >-
+    satellite-installer --scenario satellite
+    --foreman-initial-admin-username "{{ satellite_admin_username }}"
+    --foreman-initial-admin-password "{{ satellite_admin_password }}"
+    {{ satellite_options }}
+  register: installer_output
+
+- name:
+  debug:
+    var: installer_output

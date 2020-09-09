@@ -1,0 +1,29 @@
+satellite_rhn_connect: "{{ lookup('env', 'SATELLITE_RHN_CONNECT') }}"
+satellite_admin_username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+satellite_admin_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+satellite_organization: "{{ lookup('env', 'SATELLITE_ORGANIZATION') }}"
+satellite_location: "{{ lookup('env', 'SATELLITE_LOCATION') }}"
+satellite_server_url: "https://{{ ansible_fqdn }}"
+satellite_hostname: "{{ lookup('env', 'SATELLITE_HOSTNAME' | mandatory) }}"
+satellite_hostip: "{{ lookup('env', 'SATELLITE_HOSTIP' | mandatory) }}"
+satellite_domain: "{{ lookup('env', 'SATELLITE_DOMAIN' | mandatory) }}"
+satellite_scenario: "satellite"
+
+# satellite install role options:
+satellite_options: >-
+  --foreman-initial-organization  "{{ satellite_organization }}"
+  --foreman-initial-location  "{{ satellite_location }}"
+  --foreman-proxy-dns-managed false
+  --foreman-proxy-dns false
+  --foreman-proxy-dhcp false
+  --foreman-proxy-dhcp-managed false
+  --foreman-proxy-tftp false
+  --foreman-proxy-tftp-managed false
+  --foreman-proxy-puppetca true
+  --enable-foreman-plugin-discovery
+
+satellite_settings:
+  - name: "default_redhat_download_policy"
+    value: "immediate"
+  - name: "errata_status_installable"
+    value: "true"

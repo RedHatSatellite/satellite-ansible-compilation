@@ -1,0 +1,402 @@
+# put all common and customer requirements vars here
+# role flags:
+satellite_enable_storage: false
+satellite_enable_fips: false
+satellite_enable_custom_certs: false
+satellite_enable_oscap: false
+
+# controls what happens in the playbooks/sat_libvirt_install.yml playbook
+satellite_enable_virt: true
+satellite_enable_snap1: true
+satellite_enable_rhsm_yum: true
+satellite_enable_snap2: true
+satellite_enable_install_content: true
+satellite_enable_snap3: true
+satellite_enable_config: true
+satellite_enable_snap4: true
+
+# shared non-env vars
+satellite_server_url: "https://{{ ansible_fqdn }}"
+satellite_fqdn: "{{ ansible_fqdn }}"
+
+# environment lookup vars
+satellite_hostname: "{{ lookup('env', 'SATELLITE_HOSTNAME' | mandatory) }}"
+satellite_hostip: "{{ lookup('env', 'SATELLITE_HOSTIP' | mandatory) }}"
+satellite_domain: "{{ lookup('env', 'SATELLITE_DOMAIN' | mandatory) }}"
+satellite_version: "{{ lookup('env', 'SATELLITE_VERSION' | mandatory) }}"
+satellite_account_id: "{{ lookup('env', 'SATELLITE_ACCOUNT_ID') }}"
+satellite_rhn_user: "{{ lookup('env', 'SATELLITE_RHN_USER') }}"
+satellite_rhn_password: "{{ lookup('env', 'SATELLITE_RHN_PASSWORD') }}"
+satellite_rhn_activation_key: "{{ lookup('env', 'SATELLITE_RHN_AK') }}"
+satellite_rhn_org: "{{ lookup('env', 'SATELLITE_RHN_ORG')}}"
+satellite_rhn_connect: "{{ lookup('env', 'SATELLITE_RHN_CONNECT') }}"
+satellite_content_source: "{{ lookup('env', 'SATELLITE_CONTENT_SOURCE') }}"
+satellite_admin_username: "{{ lookup('env', 'SATELLITE_USERNAME') }}"
+satellite_admin_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
+satellite_organization:  "{{ lookup('env', 'SATELLITE_ORGANIZATION') }}"
+satellite_location: "{{ lookup('env', 'SATELLITE_LOCATION') }}"
+satellite_manifest_src: "{{ lookup('env','SATELLITE_MANIFEST_NAME') }}"
+satellite_manifest_dest: "/opt/satellite_manifest.zip"
+satellite_manifest_uuid: "{{ lookup('env', 'SATELLITE_MANIFEST_UUID') }}"
+satellite_certs_server_cert: "{{ lookup('env', 'SATELLITE_CERTS_SERVER_CERT') }}"
+satellite_certs_server_key: "{{ lookup('env', 'SATELLITE_CERTS_SERVER_KEY') }}"
+satellite_certs_server_ca_cert: "{{ lookup('env', 'SATELLITE_CERTS_SERVER_CA_CERT') }}"
+
+# libvirt vars
+satellite_vm_location: "/var/lib/libvirt/images"
+
+# yumupdate vars
+satellite_add_pkgs:
+  - screen
+  - unzip
+  - ipa-client
+  - tmux
+
+satellite_remove_pkgs:
+  - iwl7265-firmware
+
+#satellite_req_dirs: TODO
+#  - mount_point: /var/lib/pulp
+#    lv_name: var_lib_pulp
+#    lv_size: 520g
+#  - mount_point: /var/lib/mongodb
+#    lv_name: var_lib_mongodb
+#    lv_size: 50g
+#  - mount_point: /var/lib/pgsql
+#    lv_name: var_lib_pgsql
+#    lv_size: 10g
+#  - mount_point: /var/spool/squid
+#    lv_name: var_spool_squid
+#    lv_size: 10g
+
+# install role firewall vars
+satellite_fw_service_name: RH-Satellite-6
+
+# install role theforeman vars
+satellite_apypie_rpm: "python2-apypie-0.2.1-2.el7.noarch.rpm"
+
+# install role satellite-options:
+satellite_dhcp_interface: "{{ ansible_default_ipv4.interface }}"  # eth0
+satellite_dhcp_fromip: "192.168.122.100"
+satellite_dhcp_toip: "192.168.122.150"
+satellite_dhcp_range: "{{ satellite_dhcp_fromip }} {{ satellite_dhcp_toip }}"
+satellite_dhcp_gateway: "{{ ansible_default_ipv4.gateway }}"  # 192.168.122.1
+satellite_dhcp_nameservers: "{{ ansible_dns.nameservers[0] }}"  # 192.168.122.1
+satellite_dhcp_domain: "{{ ansible_domain }}"  # example.com
+
+# install role satellite-install command:
+satellite_options: >-
+  --foreman-initial-admin-username "{{ satellite_admin_username }}"
+  --foreman-initial-admin-password "{{ satellite_admin_password }}"
+  --foreman-initial-organization  "{{ satellite_organization }}"
+  --foreman-initial-location  "{{ satellite_location }}"
+  --foreman-proxy-dns-managed true
+  --foreman-proxy-dns true
+  --foreman-proxy-dns-interface "{{ satellite_dhcp_interface }}"
+  --foreman-proxy-dns-zone "{{ satellite_dhcp_domain }}"
+  --foreman-proxy-dns-forwarders "192.168.122.10"
+  --foreman-proxy-dns-reverse "122.168.192.in-addr.arpa"
+  --foreman-proxy-dhcp true
+  --foreman-proxy-dhcp-managed true
+  --foreman-proxy-dhcp-interface "{{ satellite_dhcp_interface }}"
+  --foreman-proxy-dhcp-range  "{{ satellite_dhcp_range }}"
+  --foreman-proxy-dhcp-gateway "{{ satellite_dhcp_gateway }}"
+  --foreman-proxy-dhcp-nameservers "{{ satellite_dhcp_nameservers }}"
+  --foreman-proxy-tftp true
+  --foreman-proxy-tftp-managed true
+  --foreman-proxy-tftp-servername "{{ satellite_hostname }}"
+  --foreman-proxy-puppetca true
+  --enable-foreman-plugin-discovery
+
+# install role settings
+satellite_settings:
+  - name: "default_redhat_download_policy"
+    value: "immediate"
+  - name: "unregister_delete_host"
+    value: "true"
+  - name: "errata_status_installable"
+    value: "true"
+  - name: "name_generator_type"
+    value: "false"
+  - name: "entries_per_page"
+    value: "100"
+  - name: "login_text"
+    value: "I've read & consent to terms in IS user agreement."
+
+# content & config role vars
+satellite_rpm_gpg_key_epel_7: /opt/rpm_gpg_key_epel_7
+satellite_server_basearch: "x86_64"
+satellite_server_releasever: "7Server"
+satellite_prod_lifecycle_env: "Production"
+satellite_domain: "{{ ansible_domain }}"
+satellite_mgmtsubnet: "ManagementNetwork"
+satellite_network: "{{ ansible_default_ipv4.network }}"
+satellite_mask: "{{ ansible_default_ipv4.netmask }}"
+satellite_partition_table_name: "Kickstart default"
+satellite_operatingsystem: "RedHat 7.7"
+satellite_kickstart_repository: "Red Hat Enterprise Linux 7 Server Kickstart x86_64 7.7"
+
+satellite_rhel7_product:
+  - name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+    label: rhel-7-server-rpms
+    repos:
+    - releasever: "7Server"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server (Kickstart)"
+    label: rhel-7-server-kickstart
+    repos:
+    - releasever: "7.7"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - RH Common (RPMs)"
+    label: rhel-7-server-rh-common-rpms
+    repos:
+    - releasever: "7Server"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)"
+    label: rhel-7-server-supplementary-rpms
+    repos:
+    - releasever: "7Server"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - Optional (RPMs)"
+    label: rhel-7-server-optional-rpms
+    repos:
+    - releasever: "7Server"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server x86_64 7Server"
+    label: rhel-server-rhscl-7-rpms
+    repos:
+    - releasever: "7Server"
+      basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Enterprise Linux 7 Server - Extras (RPMs)"
+    label: rhel-7-server-extras-rpms
+    repos:
+    - basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Satellite Tools {{ satellite_version }} (for RHEL 7 Server) (RPMs)"
+    label: rhel-7-server-satellite-tools-{{ satellite_version }}-rpms
+    repos:
+    - basearch: "{{ satellite_server_basearch }}"
+
+  - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server"
+    label: rhel-7-server-ansible-2.8-rpms
+    repos:
+    - basearch: "{{ satellite_server_basearch }}"
+
+satellite_thirdparty:
+  - name: EPEL
+    gpg: rpm_gpg_key_epel_7
+    url: "{{ content_source }}/epel/"
+    des: "Extra Packages for Enterprise Linux"
+    repo: epel-7-x86_64
+
+satellite_host_collections:
+  - name: KVMHOSTS_HC
+    description: "physical KVM servers"
+  - name: VMHOSTS_HC
+    description: "VM servers"
+  - name: SCAPHOSTS_HC
+    description: "SCAP servers"
+
+satellite_content_views:
+  - name: RHEL7Ansible_CV
+    repositories:
+      - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server x86_64"
+        product: "Red Hat Ansible Engine"
+
+  - name: RHEL7SatTools_CV
+    repositories:
+      - name: "Red Hat Satellite Tools 6.7 for RHEL 7 Server RPMs x86_64"
+        product: "Red Hat Enterprise Linux Server"
+
+  - name: RHEL7Server_CV
+    repositories:
+      - name: "Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server"
+        product: "Red Hat Enterprise Linux Server"
+      - name: "{{ satellite_kickstart_repository }}"
+        product: "Red Hat Enterprise Linux Server"
+
+  - name: RHEL7Extras_CV
+    repositories:
+      - name: "Red Hat Enterprise Linux 7 Server - Extras RPMs x86_64"
+        product: "Red Hat Enterprise Linux Server"
+
+  - name: RHEL7Optional_CV
+    repositories:
+      - name: "Red Hat Enterprise Linux 7 Server - Optional RPMs x86_64 7Server"
+        product: "Red Hat Enterprise Linux Server"
+
+  - name: RHEL7SC_CV
+    repositories:
+      - name: "Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server x86_64 7Server"
+        product: "Red Hat Software Collections (for RHEL Server)"
+
+satellite_composite_content_views:
+  - name: RHEL7_KVM_CCV
+    components:
+      - content_view: RHEL7Server_CV
+        latest: true
+      - content_view: RHEL7Ansible_CV
+        latest: true
+      - content_view: RHEL7Extras_CV
+        latest: true
+      - content_view: RHEL7Optional_CV
+        latest: true
+      - content_view: RHEL7SatTools_CV
+        latest: true
+
+  - name: RHEL7_VM_CCV
+    components:
+      - content_view: RHEL7Server_CV
+        latest: true
+      - content_view: RHEL7Optional_CV
+        latest: true
+      - content_view: RHEL7SatTools_CV
+        latest: true
+
+  - name: RHEL7_APPS_CCV
+    components:
+      - content_view: RHEL7Server_CV
+        latest: true
+      - content_view: RHEL7Optional_CV
+        latest: true
+      - content_view: RHEL7SC_CV
+        latest: true
+      - content_view: RHEL7SatTools_CV
+        latest: true
+
+satellite_activation_keys:
+  - name: KVMHOST_AK
+    lifecycle_environment: "{{ satellite_prod_lifecycle_env }}"
+    content_view: RHEL7_KVM_CCV
+    host_collections:
+      - KVMHOSTS_HC
+    subscriptions:
+      - name: "Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)"
+    content_overrides:
+      - label: rhel-7-server-ansible-2.8-rpms
+        override: enabled
+      - label: rhel-7-server-extras-rpms
+        override: enabled
+      - label: rhel-7-server-optional-rpms
+        override: enabled
+      - label: rhel-7-server-satellite-tools-{{ satellite_version }}-rpms
+        override: enabled
+    auto_attach: true
+    release_version: 7Server
+    service_level: Standard
+
+  - name: VMHOST_AK
+    lifecycle_environment: "{{ satellite_prod_lifecycle_env }}"
+    content_view: RHEL7Server_CV
+    host_collections:
+      - VMHOSTS_HC
+    subscriptions:
+      - name: "Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)"
+    content_overrides:
+      - label: rhel-server-rhscl-7-rpms
+        override: enabled
+      - label: rhel-7-server-optional-rpms
+        override: enabled
+      - label: rhel-7-server-satellite-tools-{{ satellite_version }}-rpms
+        override: enabled
+    auto_attach: true
+    release_version: 7Server
+    service_level: Standard
+
+satellite_subnets:
+  - name: "{{ satellite_mgmtsubnet }}"
+    description: "{{ satellite_mgmtsubnet }}"
+    locations:
+      - "{{ satellite_location }}"
+    organizations:
+      - "{{ satellite_organization }}"
+    network: "{{ satellite_network }}"
+    mask: "{{ satellite_mask }}"
+    gateway: "{{ satellite_dhcp_gateway }}"
+    from_ip: "{{ satellite_dhcp_fromip }}"
+    to_ip: "{{ satellite_dhcp_toip }}"
+    domains:
+      - "{{ satellite_domain }}"
+    boot_mode: "DHCP"
+    ipam: "DHCP"
+    dhcp_proxy: "{{ satellite_fqdn }}"
+    discovery_proxy: "{{ satellite_fqdn }}"
+    httpboot_proxy: "{{ satellite_fqdn }}"
+    tftp_proxy: "{{ satellite_fqdn }}"
+    remote_execution_proxy: "{{ satellite_fqdn }}"
+    server_url: "{{ satellite_server_url }}"
+
+  - name: "DMZ_inside"
+    description: "10.1.19.0"
+    locations:
+      - "{{ satellite_location }}"
+    organizations:
+      - "{{ satellite_organization }}"
+    network: "10.1.19.0"
+    mask: "255.255.255.0"
+    gateway: "10.1.19.1"
+    domains:
+      - "{{ satellite_domain }}"
+    boot_mode: "DHCP"
+    ipam: "DHCP"
+    dns_proxy: "{{ satellite_fqdn }}"
+    state: present
+
+satellite_domains:
+  - name: "{{ satellite_domain }}"
+    description: "{{ satellite_domain }}"
+    locations:
+      - "{{ satellite_location }}"
+    organizations:
+      - "{{ satellite_organization }}"
+    state: present
+
+satellite_hostgroups:
+  - name: "BASELINE"
+    description: "BASELINE"
+    architecture: "{{ satellite_server_basearch }}"
+    operatingsystem: "{{ satellite_operatingsystem }}"
+    lifecycle_environment: "{{ satellite_prod_lifecycle_env }}"
+    content_source: "{{ satellite_fqdn }}"
+    content_view: 'RHEL7Server_CV'
+    kickstart_repository: "{{ satellite_kickstart_repository }}"
+    ptable: "{{ satellite_partition_table_name }}"
+    environment: "production"
+    organization: "{{ satellite_organization }}"
+    organizations:
+      - "{{ satellite_organization }}"
+    locations:
+      - "{{ satellite_location }}"
+    domain: "{{ satellite_domain }}"
+    subnet: "{{ satellite_mgmtsubnet }}"
+    parameters:
+      - name: allowusbstorage
+        value: false
+      - name: pass_max_days
+        value: 60
+      - name: pass_min_days
+        value: 1
+      - name: pass_min_len
+        value: 15
+    state: present
+
+  - name: "VM"
+    parent: "BASELINE"
+    organization: "{{ satellite_organization }}"
+    state: present
+
+  - name: "KVM"
+    parent: "BASELINE"
+    organization: "{{ satellite_organization }}"
+    state: present
+
+  - name: "SOMEAPP"
+    parent: "BASELINE/VM/SOMEAPP"
+    organization: "{{ satellite_organization }}"
+    state: present

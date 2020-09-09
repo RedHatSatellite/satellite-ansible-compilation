@@ -1,0 +1,7 @@
+- name: etc hosts | add VM hostname / ip
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ satellite_hostname }}'
+    # yamllint disable-line rule:line-length
+    line: "{{ satellite_hostip }} {{ satellite_hostname }}.{{ satellite_domain }} {{ satellite_hostname }}"
+  when: satellite_hostip is defined

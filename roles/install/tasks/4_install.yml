@@ -1,0 +1,38 @@
+- name: install | get package facts
+  package_facts:
+    manager: auto
+
+- name: install | install satellite package
+  package:
+    name: "{{ satellite_packages }}"
+    state: present
+  when: "'satellite' not in ansible_facts.packages"
+
+# copy template file with sceniario options and only run installer if changed
+- name: install | copy installer script
+  template:
+    src: satellite_install.sh.j2
+    dest: /root/satellite_install.sh
+    owner: root
+    group: root
+    mode: 0640
+  notify: run_installer
+
+- meta: flush_handlers
+
+- name: install | move performance tuning yaml to
+    /etc/foreman-installer/custom-hiera.yaml
+  copy:
+    src: files/custom-hiera.yaml
+    dest: /etc/foreman-installer/custom-hiera.yaml
+    owner: root
+    group: root
+  notify: activate_pref_tuning
+
+- meta: flush_handlers
+
+#- name: install | run foreman-rake to import scap content
+#  shell: >-
+#    foreman-rake foreman_openscap:bulk_upload:default  # noqa 305
+#  register: openscap_rake
+#  changed_when: ("Saved" in openscap_rake.stdout)

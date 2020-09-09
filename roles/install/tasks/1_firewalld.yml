@@ -1,0 +1,31 @@
+# role tasks
+- name: firewalld | Installing firewalld package if not already avaiable
+  package:
+    name: firewalld
+    state: present
+  become: true
+
+- name: firewalld | Start firewalld service
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: firewalld | Enable the RH Satellite service permanently.
+  firewalld:
+    service: "{{ satellite_fw_service_name | default('ssh') }}"
+    zone: public
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: firewalld | Checking firewalld target policy
+  command: "/usr/bin/firewall-cmd --zone public --get-target --permanent"
+  changed_when: firewalld_public_policy.stdout != 'DROP'
+  register: firewalld_public_policy
+
+- name: firewalld | Enforce drop policy on firewall public zone
+  command: "/usr/bin/firewall-cmd --zone public --set-target DROP --permanent"
+  when: firewalld_public_policy.stdout != 'DROP'
+  notify:
+    - firewalld_reload

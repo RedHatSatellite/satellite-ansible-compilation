@@ -1,0 +1,7 @@
+# Standard vim temp files
+.*.swp
+.*.swo
+.*.swn
+# Python object files
+*.pyc
+*.pyo

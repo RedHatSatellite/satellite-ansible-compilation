@@ -1,0 +1,9 @@
+- name: theforeman | copy python2 apypie rpm file to server
+  copy:
+     src: "{{ satellite_apypie_rpm }}"
+     dest: "/tmp/{{ satellite_apypie_rpm }}"
+
+- name: theforeman | install python2 apypie rpm
+  yum:
+     name: "/tmp/{{ satellite_apypie_rpm }}"
+     state: present

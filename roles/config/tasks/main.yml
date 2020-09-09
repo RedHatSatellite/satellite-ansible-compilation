@@ -1,0 +1,39 @@
+# tasks file for config
+# create/update host collections
+- name: main | config host collections
+  import_tasks: 1_host_collections.yml
+  when: satellite_host_collections is defined
+
+# create/update lifecycle environment
+- name: main | config Lifecycle environment
+  import_tasks: 2_lifecycle_env.yml
+  when: satellite_prod_lifecycle_env is defined
+
+# create/update content views
+- name: main | config content views
+  import_tasks: 3_content_views.yml
+  when: satellite_content_views is defined
+
+# create/update activation keys
+- name: main | config activation keys
+  import_tasks: 4_activation_keys.yml
+  when: satellite_activation_keys is defined
+
+# create/update subnets
+- name: main | config subnets
+  import_tasks: 5_subnets.yml
+  when: satellite_subnets is defined
+
+# create/update domains
+- name: main | config domains
+  import_tasks: 6_domains.yml
+  when: satellite_domains is defined
+
+# create hostgroups
+- name: main | config hostgroups
+  import_tasks: 7_hostgroups.yml
+  when: satellite_hostgroups is defined
+
+# create compute nodes
+# create compute resources
+#
