@@ -4,6 +4,9 @@
 
 - name: main | install theforeman prereq
   import_tasks: 2_theforeman.yml
+  
+- name: main | Create Custom Certs
+  import_tasks: 3.5_prep-custom-certs.yml
 
 - name: main | update /etc/hosts
   import_tasks: 3_etchosts.yml
