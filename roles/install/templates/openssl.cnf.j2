@@ -1,0 +1,31 @@
+[ req ]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+x509_extensions = usr_cert
+prompt = no
+
+[ req_distinguished_name ]
+C  = US
+ST = {{ satellite_cert_state }}
+L  = {{ satellite_cert_location }}
+O  = {{ satellite_cert_org }}
+OU = {{ satellite_cert_ou }}
+CN = {{ ansible_fqdn }}
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth, clientAuth, codeSigning, emailProtection
+subjectAltName = @alt_names
+
+[ usr_cert ]
+basicConstraints=CA:FALSE
+nsCertType = client, server, email
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth, codeSigning, emailProtection
+nsComment = "Signed using Venafi"
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+
+[ alt_names ]
+DNS.1 = {{ ansible_fqdn }}

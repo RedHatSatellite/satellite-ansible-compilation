@@ -8,6 +8,16 @@ satellite_hostname: "{{ lookup('env', 'SATELLITE_HOSTNAME' | mandatory) }}"
 satellite_hostip: "{{ lookup('env', 'SATELLITE_HOSTIP' | mandatory) }}"
 satellite_domain: "{{ lookup('env', 'SATELLITE_DOMAIN' | mandatory) }}"
 satellite_scenario: "satellite"
+satellite_cert_state: "North Carolina"
+satellite_cert_location: "Raleigh"
+satellite_cert_org: "Example"
+satellite_cert_ou: "example.com"
+satellite_CSR: "false"
+## Only Change this if satellite csr is true
+satellite_cert_state: "FL"
+satellite_cert_location: "Tampa"
+satellite_cert_org: "Example LLC"
+satellite_cert_ou: "Cyber Sercurity"
 
 # satellite install role options:
 satellite_options: >-

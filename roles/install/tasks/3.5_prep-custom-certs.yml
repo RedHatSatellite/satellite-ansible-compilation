@@ -1,0 +1,46 @@
+---
+- name: create satellite cret directory
+  file:
+    path: "/tmp/backup/satellite-certificates/{{ inventory_hostname }}"
+    state: directory
+
+- name: generate server private key
+  openssl_privatekey:
+    path: "/tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_key.pem"
+    size: 4096
+
+- name: check for existing CSF
+  stat:
+    path: "/tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_csr.pem"
+  register: existing_csr
+
+- name: template out CSR answer file
+  template:
+    src: openssl.cnf.j2
+    dest: "/tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_openssl.cnf"
+
+- name: generate CSR
+  shell: "openssl req -new -key /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_key.pem -out /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_csr.pem -config /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_openssl.cnf"
+  args:
+    warn: no
+  when:
+    - not (existing_csr.stat.exists)
+
+- name: wait for CSR signing
+  pause:
+    prompt: "CSR is located at /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_csr.pem, please sign. Place cert at /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert.pem, place the CA bundle at /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_bundle.pem"
+  when:
+    - not (existing_csr.stat.exists)
+
+- name: test certificate
+  shell: "katello-certs-check -c /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert.pem -k /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_key.pem -b /tmp/backup/satellite-certificates/{{ inventory_hostname }}/{{ inventory_hostname }}_cert_bundle.pem"
+  args:
+    warn: no
+  register: katello_cert_check
+  check_mode: false
+  changed_when: false
+
+- name: print cert check
+  debug:
+    msg: "{{ katello_cert_check.stdout_lines }}"
+
