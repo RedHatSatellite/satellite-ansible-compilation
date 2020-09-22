@@ -14,11 +14,10 @@ satellite_cert_org: "Example"
 satellite_cert_ou: "example.com"
 satellite_CSR: "false"
 ## Only Change this if satellite csr is true
-satellite_country: "US"
-satellite_state: "FL"
-satellite_city: "Tampa"
-satellite_company: "Example LLC"
-satellite_organizational_unit: "Cyber Sercurity"
+satellite_cert_state: "FL"
+satellite_cert_location: "Tampa"
+satellite_cert_org: "Example LLC"
+satellite_cert_ou: "Cyber Sercurity"
 
 # satellite install role options:
 satellite_options: >-
