@@ -13,6 +13,12 @@ satellite_cert_location: "Raleigh"
 satellite_cert_org: "Example"
 satellite_cert_ou: "example.com"
 satellite_CSR: "false"
+## Only Change this if satellite csr is true
+satellite_country: "US"
+satellite_state: "FL"
+satellite_city: "Tampa"
+satellite_company: "Example LLC"
+satellite_organizational_unit: "Cyber Sercurity"
 
 # satellite install role options:
 satellite_options: >-
