@@ -12,6 +12,7 @@ satellite_cert_state: "North Carolina"
 satellite_cert_location: "Raleigh"
 satellite_cert_org: "Example"
 satellite_cert_ou: "example.com"
+satellite_CSR: "false"
 
 # satellite install role options:
 satellite_options: >-
