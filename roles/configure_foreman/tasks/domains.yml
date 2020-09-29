@@ -1,0 +1,18 @@
+---
+
+- name: configure domains
+  theforeman.foreman.domain:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organizations: "{{ domain | json_query('organizations[*].name') | list }}"
+    locations: "{{ domain | json_query('locations[*].name') | list }}"
+    name: "{{ domain.name }}"
+    state: "{{ location.state | default(omit) }}"
+  loop_control:
+    loop_var: domain
+  loop: "{{ satellite.foreman.domains }}"
+  when:
+    - satellite.foreman.domains is defined
+  delegate_to: "{{ delegate_host }}"

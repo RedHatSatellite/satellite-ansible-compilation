@@ -1,0 +1,34 @@
+---
+
+- name: configure operating systems
+  theforeman.foreman.operatingsystem:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    name: "{{ operating_system.name }}"
+    state: "{{ operating_system.state | default(omit) }}"
+    ptables: "{{ operating_system | json_query('ptable[*].name') | list }}"
+    major: "{{ operating_system.major | default(omit) }}"
+    minor: "{{ operating_system.minor | default(omit) }}"
+    os_family: "{{ operating_system.os_family | default(omit) }}"
+    description: "{{ operating_system.description | default(omit) }}"
+    password_hash: "{{ operating_system.password_hash | default(omit) }}"
+#    organizations: "{{ provisioning_template | json_query('organizations[*].name') | list }}"
+#    locations: "{{ provisioning_template | json_query('locations[*].name') | list }}"
+  loop_control:
+    loop_var: operating_system
+  loop: "{{ satellite.foreman.operating_systems }}"
+  when:
+    - satellite.foreman.operating_systems is defined
+    - not (operating_system.update_existing)
+  delegate_to: "{{ delegate_host }}"
+
+- name: updating existing operating system
+  shell: 'hammer os update --title "{{ operating_system.name }}" {{ operating_system.update_args }}'
+  loop_control:
+    loop_var: operating_system
+  loop: "{{ satellite.foreman.operating_systems }}"
+  when:
+    - satellite.foreman.operating_systems is defined
+    - operating_system.update_existing

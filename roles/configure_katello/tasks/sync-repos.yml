@@ -1,0 +1,35 @@
+---
+
+- name: grab all products to sync
+  shell: hammer --csv repository list --organization "{{ organization.organization_name }}" | cut -d ',' -f 3 | sort --unique | grep -v '^Product$'
+  register: all_products
+  changed_when: false
+  check_mode: false
+  tags:
+    - sync_repos
+
+- name: sync all repos
+  theforeman.foreman.repository_sync:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    product: "{{ product }}"
+  loop_control:
+    loop_var: product
+  loop: "{{ all_products.stdout_lines }}"
+  async: 999999
+  poll: 0
+  delegate_to: "{{ delegate_host }}"
+  tags:
+    - sync_repos
+
+- name: wait for repos to finish syncing
+  shell: hammer --csv task list --search "state = running and action ~ Synchronize" | wc -l
+  register: repo_sync_status
+  until: repo_sync_status.stdout | int == 1
+  retries: 960
+  delay: 60
+  tags:
+    - sync_repos

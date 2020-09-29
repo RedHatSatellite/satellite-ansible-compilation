@@ -1,0 +1,20 @@
+---
+
+- name: configure Red Hat repos
+  theforeman.foreman.repository_set:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    name: "{{ repo.1.repo }}"
+    product: "{{ repo.1.product }}"
+    repositories:
+    - releasever: "{{ repo.1.releasever | default(omit) }}"
+      basearch: "{{ repo.1.basearch | default(omit) }}"
+  when:
+    - repo.1.content_credential is not defined
+  loop_control:
+    loop_var: repo
+  loop: "{{ organization.content_views | subelements('repos') }}"
+  delegate_to: "{{ delegate_host }}"

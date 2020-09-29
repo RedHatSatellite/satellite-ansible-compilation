@@ -1,0 +1,28 @@
+---
+
+ignore_compute_resource_errors: true
+
+satellite:
+  admin_username: admin
+  admin_password: changeme
+  foreman:
+    organizations: "{{ lookup('file', 'vars/satellite/organizations.yml') | from_yaml }}"
+    locations: "{{ lookup('file', 'vars/satellite/locations.yml') | from_yaml }}"
+    domains: "{{ lookup('file', 'vars/satellite/domains.yml') | from_yaml }}"
+    subnets: "{{ lookup('file', 'vars/satellite/subnets.yml') | from_yaml }}"
+    compute_resources: "{{ lookup('file', 'vars/satellite/compute-resources.yml') | from_yaml }}"
+    compute_profiles: "{{ lookup('file', 'vars/satellite/compute-profiles.yml') | from_yaml }}"
+    hostgroups: "{{ lookup('file', 'vars/satellite/hostgroups.yml') | from_yaml }}"
+    partition_tables: "{{ lookup('file', 'vars/satellite/partition-tables.yml') | from_yaml }}"
+    operating_systems: "{{ lookup('file', 'vars/satellite/operating-systems.yml') | from_yaml }}"
+    provisioning_templates: "{{ lookup('file', 'vars/satellite/provisioning-templates.yml') | from_yaml }}"
+  katello:
+    - organization_name: xyz_corp
+      state: present
+      manifest: path/to/manifest.tar.gz
+      repo_sync_attempts: 1
+      lifecycle_environments: "{{ lookup('file', 'vars/satellite/lifecycle-environments.yml') | from_yaml }}"
+      content_views: "{{ lookup('file', 'vars/satellite/content-views.yml') | from_yaml }}"
+      composite_content_views: "{{ lookup('file', 'vars/satellite/composite-content-views.yml') | from_yaml }}"
+      activation_keys: "{{ lookup('file', 'vars/satellite/activation-keys.yml') | from_yaml }}"
+

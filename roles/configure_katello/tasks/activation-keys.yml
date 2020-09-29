@@ -1,0 +1,22 @@
+---
+
+- name: create activation keys task file directory
+  file:
+    path: "{{ role_path }}/tasks/satellite-configuration/{{ organization.organization_name }}/activation-keys"
+    state: directory
+  delegate_to: "{{ delegate_host }}"
+
+- name: push task file to create activation key
+  template:
+    src: templates/activation-key.yml.j2
+    dest: "{{ role_path }}/tasks/satellite-configuration/{{ organization.organization_name }}/activation-keys/{{ activation_key.name }}.yml"
+  loop_control:
+    loop_var: activation_key
+  loop: "{{ organization.activation_keys }}"
+  delegate_to: "{{ delegate_host }}"
+
+- name: include tasks to create activation keys
+  include_tasks: "{{ role_path }}/tasks/satellite-configuration/{{ organization.organization_name }}/activation-keys/{{ activation_key.name }}.yml"
+  loop_control:
+    loop_var: activation_key
+  loop: "{{ organization.activation_keys }}"

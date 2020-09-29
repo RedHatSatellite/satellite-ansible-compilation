@@ -1,0 +1,8 @@
+---
+
+- name: RedHat 8.1
+  ptable:
+    - name: Kickstart default
+    - name: RHEL8 Kickstart Partition Table
+  update_existing: true
+  update_args: --partition-tables "RHEL8 Kickstart Partition Table,Kickstart default"

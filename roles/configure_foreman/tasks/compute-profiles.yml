@@ -1,0 +1,20 @@
+---
+
+- name: configure compute_profiles
+  theforeman.foreman.compute_profile:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    name: "{{ compute_profile.name }}"
+    state: "{{ compute_profile.state | default(omit) }}"
+    compute_attributes:
+      - compute_resource: "{{ compute_profile.compute_resource }}"
+        vm_attrs: "{{ compute_profile.vm_attrs }}"
+  loop_control:
+    loop_var: compute_profile
+  loop: "{{ satellite.foreman.compute_profiles }}"
+  when:
+    - satellite.foreman.compute_profiles is defined
+  delegate_to: "{{ delegate_host }}"
+  ignore_errors: "{{ ignore_compute_resource_errors }}"

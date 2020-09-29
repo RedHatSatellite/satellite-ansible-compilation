@@ -1,0 +1,9 @@
+---
+
+- name: RHEL8 Kickstart Partition Table
+  file: files/satellite/rhel8-ptable.erb
+  os_family: Redhat
+  organizations:
+    - name: xyz_corp
+  locations:
+    - name: datacenter_1

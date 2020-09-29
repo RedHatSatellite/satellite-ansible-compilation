@@ -1,0 +1,23 @@
+---
+
+- name: push localhost lines
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ line }}"
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: BOF
+  loop_control:
+    loop_var: line
+  loop:
+    - '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4'
+    - '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6'
+
+- name: push fqdn first line
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ ansible_facts['default_ipv4_address'] }} {{ ansible_facts['fqdn'] }} {{ ansible_facts['hostname'] }}"
+    owner: root
+    group: root
+    mode: 0644

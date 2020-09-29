@@ -1,0 +1,76 @@
+---
+
+- name: s4
+  compute_resource: vcenter01.lab.msp.redhat.com
+  vm_attrs:
+    cpus: 4
+    corespersocket: 4
+    memory_mb: 4096
+    firmware: bios
+    cluster: general
+    resource_pool: Resources
+    path: /Datacenters/msp-lab/vm
+    guest_id: rhel7_64Guest
+    hardware_version: vmx-13
+    memoryHotAddEnabled: 1
+    cpuHotAddEnabled: 1
+    add_cdrom: 0
+    scsi_controllers:
+     - type: ParaVirtualSCSIController
+       key: 1000
+    interfaces_attributes:
+      0:
+        type: VirtualVmxnet3
+        network: dvportgroup-25
+    volumes_attributes:
+      0:
+        thin: true
+        name: Hard disk
+        mode: persistent
+        controller_key: 1000
+        size_gb: 100
+        datastore: storage01-iscsi-lun0
+      1:
+        thin: true
+        name: Hard disk
+        mode: persistent
+        controller_key: 1000
+        size_gb: 100
+        datastore: storage01-iscsi-lun0
+- name: hana
+  compute_resource: vcenter01.lab.msp.redhat.com
+  vm_attrs:
+    cpus: 8
+    corespersocket: 8
+    memory_mb: 16384
+    firmware: bios
+    cluster: general
+    resource_pool: Resources
+    path: /Datacenters/msp-lab/vm
+    guest_id: rhel7_64Guest
+    hardware_version: vmx-13
+    memoryHotAddEnabled: 1
+    cpuHotAddEnabled: 1
+    add_cdrom: 0
+    scsi_controllers:
+     - type: ParaVirtualSCSIController
+       key: 1000
+    interface_attributes:
+      0:
+        type: VirtualVmxnet3
+        network: virtaul-machines
+    volumes_attributes:
+      0:
+        thin: true
+        name: Hard disk
+        mode: persistent
+        controller_key: 1000
+        size_gb: 100
+        datastore: storage01-iscsi-lun0
+      1:
+        thin: true
+        name: Hard disk
+        mode: persistent
+        controller_key: 1000
+        size_gb: 500
+        datastore: storage01-iscsi-lun0

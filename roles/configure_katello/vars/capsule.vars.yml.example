@@ -1,0 +1,80 @@
+---
+
+# vars for playbook function
+delegate_host: localhost
+
+# initial settings for satellite
+satellite_initial_organization: josh
+satellite_initial_location: msp-lab
+satellite_admin_username: admin
+satellite_admin_password: 'changeme'
+
+# settings for capsules
+parent_satellite: satellite01
+satellite_loadbalanced_dns: satellite66.josh.lab.msp.redhat.com
+
+# settings for installing satellite rpms
+satellite_manifest_path: "{{ role_path }}/files/josh-manifest.zip"
+common_install_repos:
+  - 'rhel-7-server-rpms'
+  - 'rhel-server-rhscl-7-rpms'
+  - 'rhel-7-server-satellite-maintenance-6-rpms'
+  - 'rhel-7-server-ansible-2.8-rpms'
+capsule_repos:
+  - 'rhel-7-server-satellite-capsule-6.6-rpms'
+install_repos: []
+satellite_conflicting_rpms: gofer,python-pulp-agent-lib,python-gofer-proton,pulp-rpm-handlers
+
+# storage configuration for satellite
+# NOTE: if /var, /opt, and /usr are on one logical volume, comment them out below and adjust their size manually
+satellite_logical_volumes:
+  cache:
+    size: 20
+    path: /var/cache/pulp
+  pulp:
+    size: 750
+    path: /var/lib/pulp
+  mongodb:
+    size: 50
+    path: /var/lib/mongodb
+  qpidd:
+    size: 20
+    path: /var/lib/qpidd
+  varlog:
+    size: 10
+    path: /var/log
+  pqsql:
+    size: 25
+    path: /var/lib/pgsql
+  squid:
+    size: 10
+    path: /var/spool/squid
+  usr:
+    size: 8
+    path: /usr
+  opt:
+    size: 8
+    path: /opt
+  puppetlabs:
+    size: 1
+    path: /opt/puppetlabs
+  var:
+    size: 12
+    path: /var
+
+# satellite settings
+foreman_settings:
+  - name: default_download_policy
+    value: immediate
+  - name: default_proxy_download_policy
+    value: immediate
+  - name: unregister_delete_host
+    value: true
+
+satellite_tuning_config_files:
+  - name: dynflowd.j2
+    path: /etc/sysconfig/dynflowd
+  - name: httpd_limits.conf.j2
+    path: /etc/systemd/system/httpd.service.d/limits.conf
+  - name: 01-satellite-tune.conf.j2
+    path: /etc/sysctl.d/01-satellite-tune.conf

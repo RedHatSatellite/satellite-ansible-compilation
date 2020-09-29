@@ -1,0 +1,48 @@
+---
+
+- name: create activation key {{ activation_key.name }}
+  theforeman.foreman.activation_key:{% raw %}
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+{% endraw %}
+    name: {{ activation_key.name }}
+    lifecycle_environment: {{ activation_key.lifecycle_environment | default('Library') }}
+    content_view: {{ activation_key.content_view | default('Default Organization View') }}
+{% if activation_key.host_collections is defined %}
+    host_collections:
+{% for host_collection in activation_key.host_collections %}
+      - {{ host_collection.name }}
+{% endfor %}
+{% endif %}
+{% if activation_key.subscriptions is defined %}
+    subscriptions:
+{% for subscription in activation_key.subscriptions %}
+{% if subscription.subscription_name is defined %}
+      - name: "{{ subscription.subscription_name }}"
+{% endif %}
+{% if subscription.pool_id is defined %}
+      - pool_id: {{ subscription_id }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if activation_key.content_overrides is defined %}
+    content_overrides:
+{% for content_override in activation_key.content_overrides %}
+      - label: {{ content_override.label }}
+        override: {{ content_override.override | default('enabled') }}
+{% endfor %}
+{% endif %}
+{% if activation_key.auto_attach is defined %}
+    auto_attach: {{ activation_key.auto_attach }}
+{% endif %}
+{% if activation_key.release_version is defined %}
+    release_version: "{{ activation_key.release_version }}"
+{% endif %}
+{% if activation_key.service_level is defined %}
+    service_level: {{ activation_key.service_level }}
+{% endif %}{% raw %}
+  delegate_to: "{{ delegate_host }}"
+{% endraw %}

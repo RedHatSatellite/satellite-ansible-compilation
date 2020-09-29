@@ -1,0 +1,49 @@
+---
+
+- name: cv-ansible-rhel8
+  description: ansible on RHEL8
+  repos:
+    - repo: Red Hat Ansible Engine 2 for RHEL 8 x86_64 (RPMs)
+      product: Red Hat Ansible Engine
+- name: cv-e4s-server-rhel8.1
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - BaseOS - Update Services for SAP Solutions (RPMs)
+      product: Red Hat Enterprise Linux Server - Update Services for SAP Solutions
+      releasever: 8.1
+- name: cv-e4s-appstream-rhel8.1
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - AppStream - Update Services for SAP Solutions (RPMs)
+      product: Red Hat Enterprise Linux Server - Update Services for SAP Solutions
+      releasever: 8.1
+- name: cv-r4s-netweaver-rhel8.1
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - SAP NetWeaver - Update Services for SAP Solutions (RPMs)
+      product: RHEL for SAP - Update Services for SAP Solutions
+      releasever: 8.1
+- name: cv-r4h-hana-rhel8.1
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - SAP Solutions - Update Services for SAP Solutions (RPMs)
+      product: RHEL for SAP HANA - Update Services for SAP Solutions
+      releasever: 8.1
+- name: cv-server-rhel8
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+      product: Red Hat Enterprise Linux for x86_64
+      releasever: 8
+- name: cv-appstream-rhel8
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+      product: Red Hat Enterprise Linux for x86_64
+      releasever: 8
+- name: cv-satellitetools-rhel8
+  repos:
+    - repo: Red Hat Satellite Tools 6.7 for RHEL 8 x86_64 (RPMs)
+      product: Red Hat Enterprise Linux for x86_64
+- name: cv-kickstart-rhel8.1
+  repos:
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - AppStream (Kickstart)
+      product: Red Hat Enterprise Linux for x86_64
+      releasever: 8.1
+    - repo: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)
+      product: Red Hat Enterprise Linux for x86_64
+      releasever: 8.1

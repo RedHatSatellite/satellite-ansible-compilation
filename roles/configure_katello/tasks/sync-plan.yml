@@ -1,0 +1,14 @@
+---
+
+- name: create daily sync plan
+  theforeman.foreman.sync_plan:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    name: "daily"
+    interval: "daily"
+    enabled: true
+    sync_date: "2020-01-01 00:00:00 UTC"
+  delegate_to: "{{ delegate_host }}"

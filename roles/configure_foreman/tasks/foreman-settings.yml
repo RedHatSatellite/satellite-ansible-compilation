@@ -1,0 +1,15 @@
+---
+
+- name: set initial settings
+  theforeman.foreman.foreman_setting:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    name: "{{ setting.name }}"
+    value: "{{ setting.value }}"
+  loop_control:
+    loop_var: setting
+  loop: "{{ satellite.foreman_settings }}"
+  delegate_to: "{{ delegate_host }}"
+

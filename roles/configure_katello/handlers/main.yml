@@ -1,0 +1,22 @@
+---
+
+- name: rerun the satellite installer wth custom heira
+  shell: satellite-installer --scenario satellite
+  listen:
+    - rerun_satellite_installer
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+  args:
+    warn: no
+  listen:
+    - reload_systemd
+
+- name: reload kernel parameters
+  shell: sysctl -p
+  listen:
+    - reload_kernel_params
+
+- name: restart satellite
+  shell: foreman-maintain service restart
+  listen: restart_satellite

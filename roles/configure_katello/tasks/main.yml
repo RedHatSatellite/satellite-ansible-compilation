@@ -1,0 +1,18 @@
+---
+
+- import_tasks: manifest.yml
+- import_tasks: lifecycle-environments.yml
+- import_tasks: redhat-repos.yml
+- import_tasks: content-credentials.yml
+- import_tasks: sync-plan.yml
+- import_tasks: custom-products.yml
+- import_tasks: associate-redhat-products-with-sync-plan.yml
+- import_tasks: custom-repos.yml
+- include_tasks: sync-repos.yml
+  loop: "{{ range(0, organization.repo_sync_attempts, 1) | list }}"
+  when:
+    - organization.repo_sync_attempts | int != 0
+- import_tasks: content-views.yml
+- import_tasks: composite-content-views.yml
+- import_tasks: promote-composite-content-views.yml
+- import_tasks: activation-keys.yml

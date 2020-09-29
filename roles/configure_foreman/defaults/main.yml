@@ -1,0 +1,8 @@
+---
+
+satellite_url: "https://{{ ansible_fqdn }}"
+delegate_host: localhost
+
+requires_katello_content: false
+override_run_all: false
+ignore_compute_resource_errors: false
