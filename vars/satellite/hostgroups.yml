@@ -1,0 +1,44 @@
+---
+
+- name: s4-test-none
+  architecture: x86_64
+  compute_profile: s4
+  compute_resource: vcenter01.lab.msp.redhat.com
+  content_source: satellite02.lab.msp.redhat.com
+  content_view: composite-rhel8
+  domain: josh.lab.msp.redhat.com
+  lifecycle_environment: production
+  operatingsystem: RedHat 8.1
+  organization_of_content_source: xyz_corp
+  organizations:
+    - xyz_corp
+  locations:
+    - datacenter_1
+  subnet: datacenter_1-subnet-10.15.108.0_22
+  parameters:
+    - name: "kt_activation_keys"
+      value: "ak-sap-rhel8.1-production"
+  ptable: RHEL8 Kickstart Partition Table
+  pxe_loader: None
+  root_pass: changeme
+- name: s4-test-omit
+  architecture: x86_64
+  compute_profile: s4
+  compute_resource: vcenter01.lab.msp.redhat.com
+  content_source: satellite02.lab.msp.redhat.com
+  content_view: composite-rhel8
+  domain: josh.lab.msp.redhat.com
+  lifecycle_environment: production
+  operatingsystem: RedHat 8.1
+  organization_of_content_source: xyz_corp
+  organizations:
+    - xyz_corp
+  locations:
+    - datacenter_1
+  subnet: datacenter_1-subnet-10.15.108.0_22
+  parameters:
+    - name: "kt_activation_keys"
+      value: "ak-sap-rhel8.1-production"
+  ptable: RHEL8 Kickstart Partition Table
+  root_pass: changeme
+

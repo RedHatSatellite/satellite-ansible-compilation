@@ -1,0 +1,13 @@
+---
+
+- name: "publish content view version {{ content_view }} to the library"
+  theforeman.foreman.content_view_version:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    content_view: "{{ content_view }}"
+    lifecycle_environments:
+      - Library
+  delegate_to: "{{ delegate_host }}"

@@ -1,0 +1,12 @@
+---
+
+- name: sandbox
+  prior: Library
+- name: development
+  prior: sandbox
+- name: quality-assurance
+  prior: development
+- name: user-acceptance-testing
+  prior: quality-assurance
+- name: production 
+  prior: user-acceptance-testing

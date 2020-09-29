@@ -1,0 +1,6 @@
+---
+
+- name: datacenter_1
+  organizations:
+    - name: xyz_corp
+

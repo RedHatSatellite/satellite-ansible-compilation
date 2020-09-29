@@ -1,0 +1,33 @@
+---
+
+- name: configure hostgroups
+  theforeman.foreman.hostgroup:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    name: "{{ hostgroup.name }}"
+    state: "{{ hostgroup.state | default(omit) }}"
+    architecture: "{{ hostgroup.architecture | default(omit) }}"
+    compute_profile: "{{ hostgroup.compute_profile | default(omit) }}"
+    compute_resource: "{{ hostgroup.compute_resource | default(omit) }}"
+    content_source: "{{ hostgroup.content_source | default(omit) }}"
+    content_view: "{{ hostgroup.content_view | default(omit) }}"
+    domain: "{{ hostgroup.domain | default(omit) }}"
+    kickstart_repository: "{{ hostgroup.kickstart_repository | default(omit) }}"
+    lifecycle_environment: "{{ hostgroup.lifecycle_environment | default(omit) }}"
+    operatingsystem: "{{ hostgroup.operatingsystem | default(omit) }}"
+    organization: "{{ hostgroup.organization_of_content_source | default(omit) }}"
+    organizations: "{{ hostgroup.organizations | default(omit) }}"
+    locations: "{{ hostgroup.locations | default(omit) }}"
+    subnet: "{{ hostgroup.subnet | default(omit) }}"
+    parameters: "{{ hostgroup.parameters | default(omit) }}"
+    ptable: "{{ hostgroup.ptable | default(omit) }}"
+    pxe_loader: "{{ hostgroup.pxe_loader | default(omit) }}"
+    root_pass: "{{ hostgroup.root_pass | default(omit) }}"
+  loop_control:
+    loop_var: hostgroup
+  loop: "{{ satellite.foreman.hostgroups }}"
+  when:
+    - satellite.foreman.hostgroups is defined
+  delegate_to: "{{ delegate_host }}"

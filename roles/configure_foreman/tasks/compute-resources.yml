@@ -1,0 +1,21 @@
+---
+
+- name: configure compute resources
+  theforeman.foreman.compute_resource:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organizations: "{{ compute_resource | json_query('organizations[*].name') | list }}"
+    locations: "{{ compute_resource | json_query('locations[*].name') | list }}"
+    name: "{{ compute_resource.name }}"
+    state: "{{ compute_resource.state | default(omit) }}"
+    provider: "{{ compute_resource.provider }}"
+    provider_params: "{{ compute_resource.provider_params }}"
+  loop_control:
+    loop_var: compute_resource
+  loop: "{{ satellite.foreman.compute_resources }}"
+  when:
+    - satellite.foreman.compute_resources is defined
+  delegate_to: "{{ delegate_host }}"
+  ignore_errors: "{{ ignore_compute_resource_errors }}"

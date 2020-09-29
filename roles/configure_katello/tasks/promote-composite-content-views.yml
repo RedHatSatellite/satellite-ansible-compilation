@@ -1,0 +1,61 @@
+---
+
+- name: match organization to organization_id
+  theforeman.foreman.resource_info:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    resource: organizations
+  register: organizations_info
+  delegate_to: "{{ delegate_host }}"
+
+- name: set organization_id fact
+  set_fact:
+    organization_id: "{{ item.id }}"
+  when:
+    - item.name == organization.organization_name
+  loop: "{{ organizations_info.resources }}"
+
+- name: get info about the composite content views
+  theforeman.foreman.resource_info:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    resource: content_views
+    params:
+      organization_id: "{{ organization_id }}"
+      composite: true
+  register: content_view_info
+  delegate_to: "{{ delegate_host }}"
+
+- name: reset lifecycle_environments_raw var
+  set_fact:
+    lifecycle_environments_raw: []
+
+- name: gather up lifecycle environments
+  set_fact:
+    lifecycle_environments_raw: "{{ lifecycle_environments_raw + [ lifecycle_environment.name ] }}"
+  loop_control:
+    loop_var: lifecycle_environment
+  loop: "{{ organization.lifecycle_environments }}"
+
+- name: promote version 1.0 of a composite content view through the lifecycle environments
+  theforeman.foreman.content_view_version:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    content_view: "{{ composite_content_view.name }}"
+    current_lifecycle_environment: Library
+    lifecycle_environments: "{{ organization | json_query('lifecycle_environments[*].name') | list }}"
+    force_promote: true
+  when:
+    - composite_content_view.latest_version == '1.0'
+    - composite_content_view | json_query('environments[*].name') | join() == 'Library'
+  loop_control:
+    loop_var: composite_content_view
+  loop: "{{ content_view_info.resources }}"
+  delegate_to: "{{ delegate_host }}"

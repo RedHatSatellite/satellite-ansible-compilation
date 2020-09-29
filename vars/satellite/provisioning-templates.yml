@@ -1,0 +1,14 @@
+---
+
+- name: Provision RHEL
+  file: files/satellite/provision-rhel.erb
+  organizations:
+    - xyz_corp
+  locations:
+    - datacenter_1
+- name: register-rhel
+  file: files/satellite/register-rhel.erb
+  organizations:
+    - xyz_corp
+  locations:
+    - datacenter_1

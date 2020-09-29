@@ -1,0 +1,18 @@
+---
+
+- name: push task file to create content view based on number of repos
+  template:
+    src: templates/create-content-view.yml.j2
+    dest: "{{ role_path }}/tasks/create-content-view.yml"
+  delegate_to: localhost
+  changed_when: false
+
+- name: include the new tasks
+  include_tasks: "{{ role_path }}/tasks/create-content-view.yml"
+
+- name: remove the task file
+  file:
+    path: "{{ role_path }}/tasks/create-content-view.yml"
+    state: absent
+  delegate_to: localhost
+  changed_when: false

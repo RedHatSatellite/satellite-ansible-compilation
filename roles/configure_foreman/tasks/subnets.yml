@@ -1,0 +1,34 @@
+---
+
+- name: configure subnets
+  theforeman.foreman.subnet:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organizations: "{{ subnet | json_query('organizations[*].name') | list }}"
+    locations: "{{ subnet | json_query('locations[*].name') | list }}"
+    domains: "{{ subnet | json_query('domains[*].name') | list  }}"
+    name: "{{ subnet.name }}"
+    state: "{{ subnet.state | default(omit) }}"
+    from_ip: "{{ subnet.from_ip | default(omit) }}"
+    to_ip: "{{ subnet.to_ip | default(omit) }}"
+    boot_mode: "{{ subnet.boot_mode | default(omit) }}"
+    dhcp_proxy: "{{ subnet.dhcp_proxy | default(omit) }}"
+    tftp_proxy: "{{ subnet.tftp_proxy | default(omit) }}"
+    dns_proxy: "{{ subnet.dns_proxy | default(omit) }}"
+    template_proxy: "{{ template_proxy | default(omit) }}"
+    vlanid: "{{ subnet.vlanid | default(omit) }}"
+    mtu: "{{ subnet.mtu | default(omit) }}"
+    network: "{{ subnet.network }}"
+    mask: "{{ subnet.mask }}"
+    gateway: "{{ subnet.gateway }}"
+    dns_primary: "{{ subnet.dns_primary }}"
+    dns_secondary: "{{ subnet.dns_secondary }}"
+    ipam: "{{ subnet.ipam | default(omit) }}"
+  loop_control:
+    loop_var: subnet
+  loop: "{{ satellite.foreman.subnets }}"
+  when:
+    - satellite.foreman.subnets is defined
+  delegate_to: "{{ delegate_host }}"

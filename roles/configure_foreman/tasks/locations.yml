@@ -1,0 +1,15 @@
+---
+
+- name: configure satellite locations
+  theforeman.foreman.location:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organizations: "{{ location | json_query('organizations[*].name') | list }}"
+    name: "{{ location.name }}"
+    state: "{{ location.state | default(omit) }}"
+  loop_control:
+    loop_var: location
+  loop: "{{ satellite.foreman.locations }}"
+  delegate_to: "{{ delegate_host }}"

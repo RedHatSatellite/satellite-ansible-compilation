@@ -1,0 +1,22 @@
+---
+
+- name: ak-sap-rhel8.1-sandbox
+  lifecycle_environment: sandbox
+  content_view: composite-rhel8
+  release_version: 8.1
+- name: ak-sap-rhel8.1-development
+  lifecycle_environment: development
+  content_view: composite-rhel8
+  release_version: 8.1
+- name: ak-sap-rhel8.1-quality-assurance
+  lifecycle_environment: quality-assurance
+  content_view: composite-rhel8
+  release_version: 8.1
+- name: ak-sap-rhel8.1-user-acceptance-testing
+  lifecycle_environment: user-acceptance-testing
+  content_view: composite-rhel8
+  release_version: 8.1
+- name: ak-sap-rhel8.1-production
+  lifecycle_environment: production
+  content_view: composite-rhel8
+  release_version: 8.1

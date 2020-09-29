@@ -1,0 +1,5 @@
+---
+
+satellite_url: "https://{{ ansible_fqdn }}"
+
+delegate_host: localhost

@@ -1,0 +1,10 @@
+galaxy_info:
+  author: Josh Swanson
+  description: configures the katello settings with satellite
+  license: GPL-2.0
+  min_ansible_version: 2.9
+  galaxy_tags:
+    - satellite6
+    - configure_satellite
+
+dependencies: []

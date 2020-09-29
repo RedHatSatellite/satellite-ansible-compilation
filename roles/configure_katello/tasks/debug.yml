@@ -1,0 +1,5 @@
+---
+
+- debug:
+    msg: "{{ organization.name }} {{ item.1 }}"
+  loop: "{{ organization.content_views | subelements('repos') }}"

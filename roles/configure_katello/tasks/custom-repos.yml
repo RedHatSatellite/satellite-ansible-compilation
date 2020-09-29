@@ -1,0 +1,26 @@
+---
+
+- name: configure repos for custom products
+  theforeman.foreman.repository:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    state: present
+    content_type: yum
+    name: "{{ repo.1.repo }}"
+    product: "{{ repo.1.product }}"
+    url: "{{ repo.1.repo_url }}"
+    mirror_on_sync: false
+    download_policy: immediate
+    gpg_key: "{{ repo.1.content_credential_name }}"
+  when:
+    - repo.1.repo is defined
+    - repo.1.product is defined
+    - repo.1.repo_url is defined
+    - repo.1.content_credential is defined
+  loop_control:
+    loop_var: repo
+  loop: "{{ organization.content_views | subelements('repos') }}"
+  delegate_to: "{{ delegate_host }}" 

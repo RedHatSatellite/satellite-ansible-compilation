@@ -1,0 +1,26 @@
+---
+
+- name: configure satellite
+  hosts:
+    - satellite
+  collections:
+    - jjaswanson4.configure_satellite
+  pre_tasks:
+    - name: load in satellite vars
+      include_vars:
+        file: "{{ vars_file }}"
+  tasks:
+    - name: include configure_foreman role with katello independent pieces
+      include_role:
+        name: configure_foreman
+    - name: build satellite by organization
+      include_role:
+        name: configure_katello
+      loop_control:
+        loop_var: organization
+      loop: "{{ satellite.katello }}"
+    - name: do that again but for katello dependent pieces
+      include_role:
+        name: configure_foreman
+      vars:
+        requires_katello_content: true

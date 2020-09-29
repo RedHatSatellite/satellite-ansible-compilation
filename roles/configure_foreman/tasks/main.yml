@@ -1,0 +1,36 @@
+---
+
+# Configures foreman components.
+# NOTE: Some foreman components can be mapped to katello components, such as operating systems and hostgroups. These should be run after the configure_katello role is run.
+# By default, components with katello component mappings will not run by default. This behavior is controlled by the variable "requires_katello_content".
+# There is also an overriding variable called override_run_all that can be used to run all tasks.
+
+- name: configure foreman components that don't require katello content to be present
+  include_tasks:
+    file: "{{ task }}"
+  loop_control:
+    loop_var: task
+  loop:
+    - organizations.yml
+    - locations.yml
+    - domains.yml
+    - subnets.yml
+    - compute-resources.yml
+    - compute-profiles.yml
+  when:
+    - not (requires_katello_content) or
+      override_run_all
+
+- name: configure foreman components that do require katello content to be present
+  include_tasks:
+    file: "{{ task }}"
+  loop_control:
+    loop_var: task
+  loop:
+    - provisioning-templates.yml
+    - partition-tables.yml
+    - operating-systems.yml
+    - hostgroups.yml
+  when:
+    - requires_katello_content or
+      override_run_all

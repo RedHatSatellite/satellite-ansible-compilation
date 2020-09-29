@@ -1,0 +1,13 @@
+---
+
+- name: vcenter01.company.com
+  provider: vmware
+  provider_params:
+    url: vcenter01.company.com
+    user: 'Administrator@vsphere.local'
+    password: changme
+    datacenter: msp-lab
+  organizations:
+    - name: xyz_corp
+  locations:
+    - name: datacenter_1

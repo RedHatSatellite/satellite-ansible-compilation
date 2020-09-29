@@ -1,0 +1,22 @@
+---
+
+- name: get enabled Red Hat products
+  shell: hammer --csv repository list --organization "{{ organization.organization_name }}" | cut -d ',' -f 3 | sort --unique | grep -v '^Product$'
+  register: redhat_products
+  changed_when: false
+  check_mode: false
+
+- name: set Red Hat products to sync plan
+  theforeman.foreman.product:
+    username: "{{ satellite.admin_username }}"
+    password: "{{ satellite.admin_password }}"
+    validate_certs: false
+    server_url: "{{ satellite_url }}"
+    organization: "{{ organization.organization_name }}"
+    name: "{{ product }}"
+    sync_plan: daily
+  loop_control:
+    loop_var: product
+  with_items:
+    - "{{ redhat_products.stdout_lines }}"
+  delegate_to: "{{ delegate_host }}"

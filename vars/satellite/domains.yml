@@ -1,0 +1,7 @@
+---
+
+- name: josh.lab.msp.redhat.com
+  organizations:
+    - name: xyz_corp
+  locations:
+    - name: datacenter_1

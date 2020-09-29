@@ -1,0 +1,16 @@
+---
+
+- name: datacenter_1-subnet-10.15.108.0_22
+  network: 10.15.108.0
+  mask: 255.255.255.0
+  gateway: 10.15.108.254
+  dns_primary: 10.15.108.148
+  dns_secondary: 10.15.108.149
+  ipam: None
+  boot_mode: Static
+  organizations:
+    - name: xyz_corp
+  locations:
+    - name: datacenter_1
+  domains:
+    - name: josh.lab.msp.redhat.com

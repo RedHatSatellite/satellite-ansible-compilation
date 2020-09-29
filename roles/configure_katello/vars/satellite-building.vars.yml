@@ -1,0 +1,404 @@
+---
+
+# vars for playbook function
+delegate_host: localhost
+im_ok_with_pip_from_epel: true
+
+# initial settings for satellite
+satellite_initial_organization: josh
+satellite_initial_location: msp-lab
+satellite_admin_username: admin
+satellite_admin_password: 'changeme'
+
+# settings for installing satellite rpms
+satellite_manifest_path: "{{ role_path }}/files/josh-manifest.zip"
+common_install_repos:
+  - 'rhel-7-server-rpms'
+  - 'rhel-server-rhscl-7-rpms'
+  - 'rhel-7-server-satellite-maintenance-6-rpms'
+  - 'rhel-7-server-ansible-2.8-rpms'
+satellite_repos:
+  - 'rhel-7-server-satellite-6.6-rpms'
+capsule_repos:
+  - 'rhel-7-server-satellite-capsule-6.6-rpms'
+install_repos: []
+satellite_conflicting_rpms: gofer,python-pulp-agent-lib,python-gofer-proton,pulp-rpm-handlers
+
+# storage configuration for satellite
+# NOTE: if /var, /opt, and /usr are on one logical volume, comment them out below and adjust their size manually
+satellite_logical_volumes:
+  cache:
+    size: 20
+    path: /var/cache/pulp
+  pulp:
+    size: 750
+    path: /var/lib/pulp
+  mongodb:
+    size: 50
+    path: /var/lib/mongodb
+  qpidd:
+    size: 20
+    path: /var/lib/qpidd
+  varlog:
+    size: 10
+    path: /var/log
+  pqsql:
+    size: 25
+    path: /var/lib/pgsql
+  squid:
+    size: 10
+    path: /var/spool/squid
+  usr:
+    size: 8
+    path: /usr
+  opt:
+    size: 8
+    path: /opt
+  puppetlabs:
+    size: 1
+    path: /opt/puppetlabs
+  var:
+    size: 12
+    path: /var
+
+# satellite settings
+foreman_settings:
+  - name: default_download_policy
+    value: immediate
+  - name: default_proxy_download_policy
+    value: immediate
+  - name: unregister_delete_host
+    value: true
+
+operating_systems:
+  - name: rhel6
+    releasever: 6Server
+  - name: rhel7
+    releasever: 7Server
+  - name: rhel8
+    releasever: '8'
+
+composite_content_views:
+  composite-rhel6:
+    description: 'rhel6 packages'
+    content_views:
+      - content_view: cv-epel-rhel6
+      - content_view: cv-extras-rhel6
+      - content_view: cv-fasttrack-rhel6
+      - content_view: cv-ha-rhel6
+      - content_view: cv-optional-rhel6
+      - content_view: cv-rhcommon-rhel6
+      - content_view: cv-rhva-rhel6
+      - content_view: cv-server-rhel6
+      - content_view: cv-softwarecollections-rhel6
+      - content_view: cv-supplementary-rhel6
+      - content_view: cv-kickstart-rhel6.10
+  composite-rhel7:
+    description: 'rhel7 packages'
+    content_views:
+      - content_view: cv-ceph-rhel7
+      - content_view: cv-ansible-rhel7
+      - content_view: cv-epel-rhel7
+      - content_view: cv-extras-rhel7
+      - content_view: cv-fasttrack-rhel7
+      - content_view: cv-ha-rhel7
+      - content_view: cv-optional-rhel7
+      - content_view: cv-os4-rhel7
+      - content_view: cv-rhcommon-rhel7
+      - content_view: cv-rhvh-rhel7
+      - content_view: cv-rhvm43-rhel7
+      - content_view: cv-rhvm44-rhel7
+      - content_view: cv-satellite66-rhel7
+      - content_view: cv-server-rhel7
+      - content_view: cv-softwarecollections-rhel7
+      - content_view: cv-supplementary-rhel7
+      - content_view: cv-kickstart-rhel7.7
+  composite-rhel8:
+    description: 'rhel8 packages'
+    content_views:
+      - content_view: cv-ansible-rhel8
+      - content_view: cv-appstream-rhel8
+      - content_view: cv-epel-rhel8
+      - content_view: cv-ha-rhel8
+      - content_view: cv-server-rhel8
+      - content_view: cv-supplementary-rhel8
+      - content_view: cv-kickstart-rhel8.1
+
+lifecycle_environments:
+  - name: test
+    description: 'wild west'
+    prior: 'Library'
+  - name: stage
+    description: 'dont test in prod'
+    prior: 'test'
+  - name: prod
+    description: 'big leagues'
+    prior: 'stage'
+
+content_views:
+  cv-epel-rhel6:
+    repos:
+      - repo: "Extra Packages for Enterprise Linux 6 Repository"
+        repo_url: "http://download.fedoraproject.org/pub/epel/6/x86_64"
+        product: "Extra Packages for Enterprise Linux 6"
+        content_credential: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6"
+        content_credential_name: "cc-epel6"
+  cv-epel-rhel7:
+    repos:
+      - repo: "Extra Packages for Enterprise Linux 7 Repository"
+        repo_url: "http://download.fedoraproject.org/pub/epel/7/x86_64"
+        product: "Extra Packages for Enterprise Linux 7"
+        content_credential: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
+        content_credential_name: "cc-epel7"
+  cv-epel-rhel8:
+    repos:
+      - repo: "Extra Packages for Enterprise Linux 8 Repository"
+        repo_url: "http://download.fedoraproject.org/pub/epel/8/Everything/x86_64"
+        product: "Extra Packages for Enterprise Linux 8"
+        content_credential: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+        content_credential_name: "cc-epel8"
+  cv-ansible-rhel8:
+    description: 'ansible on RHEL8'
+    repos:
+      - repo: "Red Hat Ansible Engine 2 for RHEL 8 x86_64 (RPMs)"
+        product: 'Red Hat Ansible Engine'
+      - repo: "Red Hat Ansible Engine 2.8 for RHEL 8 x86_64 (RPMs)"
+        product: 'Red Hat Ansible Engine'
+  cv-ansible-rhel7:
+    description: 'ansible on RHEL7'
+    repos:
+      - repo: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server"
+        product: 'Red Hat Ansible Engine'
+        basearch: "x86_64"
+      - repo: "Red Hat Ansible Engine 2.6 RPMs for Red Hat Enterprise Linux 7 Server"
+        product: 'Red Hat Ansible Engine'
+        basearch: "x86_64"
+      - repo: "Red Hat Ansible Engine 2 RPMs for Red Hat Enterprise Linux 7 Server"
+        product: 'Red Hat Ansible Engine'
+        basearch: "x86_64"
+  cv-appstream-rhel8:
+    repos:
+      - repo: "Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)"
+        product: "Red Hat Enterprise Linux for x86_64"
+        releasever: "8"
+  cv-extras-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server - Extras (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-extras-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server - Extras (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-fasttrack-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server - Fastrack (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+      - repo: "Red Hat Enterprise Linux 6 Server - Optional Fastrack (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-fasttrack-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server - Fastrack (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+      - repo: "Red Hat Enterprise Linux 7 Server - Optional Fastrack (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-ha-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux High Availability (for RHEL 6 Server) (RPMs)"
+        product: "Red Hat Enterprise Linux High Availability for x86_64"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-ha-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux High Availability (for RHEL 7 Server) (RPMs)"
+        product: "Red Hat Enterprise Linux High Availability for x86_64"
+        releasever: "7Server"
+        basearch: "x86_64"
+        content_view: 'cv-ha-rhel7'
+  cv-ha-rhel8:
+    repos:
+      - repo: "Red Hat Enterprise Linux 8 for x86_64 - High Availability (RPMs)"
+        product: "Red Hat Enterprise Linux High Availability for x86_64"
+        releasever: "8"
+  cv-optional-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server - Optional (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-optional-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server - Optional (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "7Server"
+        basearch: "x86_64"
+  cv-os4-rhel7:
+    repos:
+      - repo: "Red Hat OpenShift Container Platform 4.2 (RPMs)"
+        product: "Red Hat OpenShift Container Platform"
+        basearch: "x86_64"
+  cv-rhcommon-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-rhcommon-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server - RH Common (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "7Server"
+        basearch: "x86_64"
+  cv-rhva-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Virtualization Agents for RHEL 6 Server (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-rhvh-rhel7:
+    repos:
+      - repo: "Red Hat Virtualization Host 7 (RPMs)"
+        product: "Red Hat Virtualization Host"
+        basearch: "x86_64"
+        content_view: 'cv-rhvh-rhel7'
+  cv-rhvm43-rhel7:
+    repos:
+      - repo: "Red Hat Virtualization Manager v4.3 (RHEL 7 Server) (RPMs)"
+        product: "Red Hat Virtualization Manager"
+        basearch: "x86_64"
+  cv-rhvm44-rhel7:
+    repos:
+      - repo: "Red Hat Virtualization Manager v4.4 (RHEL 7 Server) (RPMs)"
+        product: "Red Hat Virtualization Manager"
+        basearch: "x86_64"
+  cv-satellite66-rhel7:
+    repos:
+      - repo: "Red Hat Satellite 6.6 (for RHEL 7 Server) (RPMs)"
+        product: "Red Hat Satellite"
+        basearch: "x86_64"
+      - repo: "Red Hat Satellite Capsule 6.6 (for RHEL 7 Server) (RPMs)"
+        product: "Red Hat Satellite Capsule"
+        basearch: "x86_64"
+      - repo: "Red Hat Satellite Maintenance 6 (for RHEL 7 Server) (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-server-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "6Server"
+        basearch: "x86_64"
+      - repo: "Red Hat Satellite Tools 6.6 (for RHEL 6 Server) (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-server-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "7Server"
+        basearch: "x86_64"
+      - repo: "Red Hat Satellite Tools 6.6 (for RHEL 7 Server) (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        basearch: "x86_64"
+  cv-server-rhel8:
+    repos:
+      - repo: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"
+        product: "Red Hat Enterprise Linux for x86_64"
+        releasever: "8"
+      - repo: "Red Hat Satellite Tools 6.6 for RHEL 8 x86_64 (RPMs)"
+        product: "Red Hat Enterprise Linux for x86_64"
+        content_view: 'cv-server-rhel8'
+  cv-softwarecollections-rhel6:
+    repos:
+      - repo: "Red Hat Software Collections RPMs for Red Hat Enterprise Linux 6 Server"
+        product: "Red Hat Software Collections (for RHEL Server)"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-supplementary-rhel6:
+    repos:
+      - repo: "Red Hat Enterprise Linux 6 Server - Supplementary (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "6Server"
+        basearch: "x86_64"
+  cv-softwarecollections-rhel7:
+    repos:
+      - repo: "Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server"
+        product: "Red Hat Software Collections (for RHEL Server)"
+        releasever: "7Server"
+        basearch: "x86_64"
+  cv-supplementary-rhel7:
+    repos:
+      - repo: "Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)"
+        product: "Red Hat Enterprise Linux Server"
+        releasever: "7Server"
+        basearch: "x86_64"
+  cv-supplementary-rhel8:
+    repos:
+      - repo: "Red Hat Enterprise Linux 8 for x86_64 - Supplementary (RPMs)"
+        product: "Red Hat Enterprise Linux for x86_64"
+        releasever: "8"
+  cv-ceph-rhel7:
+    repos:
+      - repo: Red Hat Ceph Storage MON 3 for Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Ceph Storage MON
+        basearch: x86_64
+      - repo: Red Hat Ceph Storage OSD 3 for Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Ceph Storage OSD
+        basearch: x86_64
+      - repo: Red Hat Ceph Storage Tools 3 for Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Ceph Storage
+        basearch: x86_64
+  cv-kickstart-rhel6.10:
+    repos:
+      - repo: Red Hat Enterprise Linux 6 Server (Kickstart)
+        product: Red Hat Enterprise Linux Server
+        basearch: x86_64
+        releasever: '6.10'
+  cv-kickstart-rhel7.7:
+    repos:
+      - repo: Red Hat Enterprise Linux 7 Server (Kickstart)
+        product: Red Hat Enterprise Linux Server
+        basearch: x86_64
+        releasever: '7.7'
+  cv-kickstart-rhel8.1:
+    repos:
+      - repo: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)
+        product: Red Hat Enterprise Linux for x86_64
+        basearch: x86_64
+        releasever: '8.1'
+      - repo: Red Hat Enterprise Linux 8 for x86_64 - AppStream (Kickstart)
+        product: Red Hat Enterprise Linux for x86_64
+        basearch: x86_64
+        releasever: '8.1'
+
+
+activation_keys:
+  ak-rhel7:
+    subscriptions:
+      - subscription: Red Hat Enterprise Linux, Premium (One Year, Enterprise Program)
+  ak-rhel6:
+    subscriptions:
+      - subscription: Red Hat Enterprise Linux, Premium (One Year, Enterprise Program)
+  ak-ceph:
+    subscriptions:
+  ak-standard:
+    subscriptions:
+  ak-josh7:
+    subscriptions:
+      - subscription: Extra Packages for Enterprise Linux 7
+  ak-openstack:
+    subscriptions:
+      - subscription: Red Hat OpenStack Platform, Premium (One Year, Enterprise Program)
+
+satellite_tuning_config_files:
+  - name: dynflowd.j2
+    path: /etc/sysconfig/dynflowd
+  - name: httpd_limits.conf.j2
+    path: /etc/systemd/system/httpd.service.d/limits.conf
+  - name: 01-satellite-tune.conf.j2
+    path: /etc/sysctl.d/01-satellite-tune.conf
