@@ -31,7 +31,7 @@ Locally available content source via http for a disconnected install
 
 Role Variables
 --------------
-
+```
 satellite_rhn_activation_key: "{{ lookup('env', 'SATELLITE_RHN_AK') }}"
 satellite_rhn_org: "{{ lookup('env', 'SATELLITE_RHN_ORG')}}"
 satellite_rhn_pool_id: "{{ lookup('env', 'SATELLITE_RHN_POOL_ID')}}"
@@ -41,7 +41,7 @@ satellite_rhn_password: "{{ lookup('env', 'SATELLITE_RHN_PASSWORD') }}"
 satellite_version: "{{ lookup('env', 'SATELLITE_VERSION') }}"
 satellite_rhelver: "{{ lookup('env', 'SATELLITE_RHELVER') | mandatory }}"
 satellite_content_source: "{{ lookup('env', 'SATELLITE_CONTENT_SOURCE') }}"
-
+```
 
 Dependencies
 ------------
