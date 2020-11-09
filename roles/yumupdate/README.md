@@ -18,7 +18,7 @@ Valid Red Hat Subscriptions
 
 Role Variables
 --------------
-
+```
 satellite_add_pkgs:
   - screen
   - unzip
@@ -27,7 +27,7 @@ satellite_add_pkgs:
 
 satellite_remove_pkgs:
   - iwl7265-firmware
-
+```
 
 Dependencies
 ------------

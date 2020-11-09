@@ -30,7 +30,7 @@ Enabled and sync'd repos
 
 Role Variables
 --------------
-
+```
 # defaults file for sat_config
 # yamllint disable-line rule:line-length
 satellite_admin_username: "{{ lookup('env', 'SATELLITE_USERNAME') | mandatory }}"
@@ -121,7 +121,7 @@ satellite_activation_keys:
     subscriptions:
       # yamllint disable-line rule:line-length
       - name: "CHANGEME"
-      #- name: "Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)"
+        #- name: "Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)"
     content_overrides:
       - label: rhel-7-server-ansible-2.8-rpms
         override: enabled
@@ -212,7 +212,7 @@ satellite_activation_keys:
 #    parent: "BASELINE/VM/SOMEAPP"
 #    organization: "{{ satellite_organization }}"
 #    state: present
-
+```
 Dependencies
 ------------
 
