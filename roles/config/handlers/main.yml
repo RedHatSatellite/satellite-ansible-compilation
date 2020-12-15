@@ -1,6 +1,6 @@
 # handlers file for sat_config
 - name: handler - publish content views
-  oasis_roles.satellite.content_view_version:
+  theforeman.foreman.content_view_version:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"
@@ -11,7 +11,7 @@
   with_items: "{{ satellite_content_views }}"
 
 - name: handler - publish composite content views
-  oasis_roles.satellite.content_view_version:
+  theforeman.foreman.content_view_version:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"

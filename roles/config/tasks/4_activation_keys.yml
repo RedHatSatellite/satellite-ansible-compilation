@@ -1,6 +1,6 @@
 - name: "config activation keys | Create an Activation key with the created
     content view"
-  theforeman.satellite.activation_key:
+  theforeman.foreman.activation_key:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"

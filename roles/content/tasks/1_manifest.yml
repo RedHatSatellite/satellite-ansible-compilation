@@ -19,7 +19,7 @@
   when: satellite_rhn_connect == 'disconnect'
 
 - name: manifest | upload the manifest
-  theforeman.satellite.subscription_manifest:
+  theforeman.foreman.subscription_manifest:
     username: "{{ satellite_admin_username }}"
     password: "{{ satellite_admin_password }}"
     server_url: "{{ satellite_server_url }}"
