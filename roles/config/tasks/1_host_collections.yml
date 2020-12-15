@@ -8,5 +8,5 @@
     name: "{{ item.name }}"
     description: "{{ item.description }}"
     organization: "{{ satellite_organization }}"
-    state: "{{ satellite_state }"
+    state: "{{ satellite_state }}"
   with_items: "{{ satellite_host_collections }}"
