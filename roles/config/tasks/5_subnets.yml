@@ -1,5 +1,5 @@
 - name: "config subnets | create or update subnets"
-  theforeman.satellite.subnet:
+  theforeman.foreman.subnet:
     name: "{{ item.name }}"
     description: "{{ item.description }}"
     network: "{{ item.network }}"
