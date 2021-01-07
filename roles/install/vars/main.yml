@@ -1,6 +1,5 @@
 satellite_packages:
   - satellite
-  - python2-apypie
   - chrony
   - sos
 
