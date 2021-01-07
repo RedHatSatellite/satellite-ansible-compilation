@@ -2,9 +2,6 @@
 - name: main | config firewalld
   import_tasks: 1_firewalld.yml
 
-- name: main | install theforeman prereq
-  import_tasks: 2_theforeman.yml
-  
 - name: main | Create Custom Certs
   import_tasks: 3.5_prep-custom-certs.yml
   when: satellite_CSR == 'true'
