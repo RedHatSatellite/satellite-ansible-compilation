@@ -23,7 +23,7 @@
 - name: install | move performance tuning yaml to
     /etc/foreman-installer/custom-hiera.yaml
   copy:
-    src: files/custom-hiera.yaml
+    src: "{{ satellite_custom_hiera }}"
     dest: /etc/foreman-installer/custom-hiera.yaml
     owner: root
     group: root
