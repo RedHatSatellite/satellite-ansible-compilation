@@ -60,7 +60,7 @@ satellite_rhel7_product:
       - basearch: "{{ satellite_server_basearch }}"
 
   # yamllint disable-line rule:line-length
-  - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server"
-    label: rhel-7-server-ansible-2.8-rpms
+  - name: "Red Hat Ansible Engine 2 RPMs for Red Hat Enterprise Linux 7 Server"
+    label: rhel-7-server-ansible-2-rpms
     repos:
       - basearch: "{{ satellite_server_basearch }}"

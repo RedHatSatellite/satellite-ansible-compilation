@@ -1,1 +1,10 @@
+---
 # Vars for rhsm
+# list of repos required to install Satellite
+rhsm_required_repos:
+- rhel-{{ ansible_distribution_major_version }}-server-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-satellite-{{ satellite_version }}-rpms
+- rhel-server-rhscl-{{ ansible_distribution_major_version }}-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-satellite-maintenance-6-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-ansible-2-rpms
+# FIXME is this OK to have latest Ansible or do we need a specific version of Ansible for a specific version of Satellite?

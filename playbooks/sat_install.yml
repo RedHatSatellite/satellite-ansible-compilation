@@ -1,8 +1,14 @@
 - name: site |  Install Satellite
-  hosts: satellite
+  hosts: satellites
+  become: true  # almost all actions to setup Satellite require root access
   roles:
     - role: rhsm
+      tags: sat_rhsm
     - role: yumupdate
+      tags: sat_yumupdate
     - role: install
+      tags: sat_install
     - role: content
+      tags: sat_content
     - role: config
+      tags: sat_config

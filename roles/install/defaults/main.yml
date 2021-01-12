@@ -13,11 +13,6 @@ satellite_cert_location: "Raleigh"
 satellite_cert_org: "Example"
 satellite_cert_ou: "example.com"
 satellite_CSR: "false"
-## Only Change this if satellite csr is true
-satellite_cert_state: "FL"
-satellite_cert_location: "Tampa"
-satellite_cert_org: "Example LLC"
-satellite_cert_ou: "Cyber Sercurity"
 
 # satellite install role options:
 satellite_options: >-
@@ -37,3 +32,7 @@ satellite_settings:
     value: "immediate"
   - name: "errata_status_installable"
     value: "true"
+
+# set this to true if you want to enforce running the installer script
+# this is generally only required/recommended if the installer script failed
+satellite_force_install: false

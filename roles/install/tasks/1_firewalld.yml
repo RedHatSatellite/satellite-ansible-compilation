@@ -1,5 +1,5 @@
 # role tasks
-- name: firewalld | Installing firewalld package if not already avaiable
+- name: firewalld | Installing firewalld package if not already available
   package:
     name: firewalld
     state: present

@@ -34,3 +34,15 @@ The moderators of this project reserve the right to remove any roles that are ca
 
 ## List of Roles contributed by the community
 See [Roles](Roles.md)
+
+## HOWTO
+
+### How to create a Satellite server
+
+* copy [sat_env.sh](sat_env.sh) to your own version, e.g. `~/.sat_env.sh` (the default) or `sat_env.myown.sh` (will be ignored by Git).
+* adapt the environment definition file to your needs
+* create an inventory... TODO add more information
+* if you didn't use the default location, export the variable `SAT_ENV_FILE` pointing to your environment file, e.g. `export SAT_ENV_FILE=./sat_env.myown.sh`.
+* call `./run_sat.sh` with the parameters required to make ansible-playbook work, e.g. with `-K` for sudo rights and/or `-i inventory.myown.d` to point at your inventory.
+
+> **TIP** if the installation of Satellite fails (meaning, during the handler task installing Satellite), then fix and repeat adding `-e satellite_force_install=true` so that the pre-existing script is removed and restarted.

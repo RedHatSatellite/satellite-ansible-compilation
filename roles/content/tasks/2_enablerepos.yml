@@ -1,4 +1,4 @@
-- name: enabling repos | checking pulp directory is owned by apache
+- name: enabling repos | checking pulp directory is owned by apache  # FIXME: why?
   file:
     path: /var/lib/pulp
     owner: apache
