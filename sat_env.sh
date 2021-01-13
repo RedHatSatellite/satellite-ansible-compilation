@@ -89,3 +89,10 @@ export SATELLITE_MANIFEST_NAME="/opt/manifest_example.zip"
 
 # User Password for the account
 # export SATELLITE_RHN_PASSWORD=(access.redhat.com account password)
+
+# -- subscription _within_ Satellite
+# so that an AK can be created by default, you need to define one subscription (or more) covering RHEL
+# It must be a list of dicts in YAML (or JSON) format, e.g. uncomment and adapt one of the following lines
+#export SATELLITE_SUBS_FOR_AK="[ {'name': 'Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)'} ]"
+#export SATELLITE_SUBS_FOR_AK="[ {'pool_id': '0123456789abcdef0123456789abcdef'} ]"           # aka Candlepin ID/UUID
+#export SATELLITE_SUBS_FOR_AK="[ {'upstream_pool_id': '0123456789abcdef0123456789abcdef'} ]"  # aka Master Pools
