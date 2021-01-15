@@ -1,0 +1,24 @@
+---
+
+- name: get secondary type of information from Satellite
+  theforeman.foreman.resource_info:
+    full_details: "{{ item.full_details | default(satinfo_full_details) }}"
+    organization: "{{ item.organization | default(omit) }}"  # not all queries accept scoping
+    params: "{{ {'organization_id': __satinfo_secondary_item.id} | combine (item.params | default({})) }}"
+    search: "{{ item.search | default(omit) }}"
+    resource: "{{ item.name }}"
+    server_url: "{{ satellite_server_url | default(omit) }}"  # hopefully defined by FOREMAN_SERVER_URL
+    username: "{{ satellite_username | default(omit) }}"  # hopefully defined by FOREMAN_USERNAME
+    password: "{{ satellite_password | default(omit) }}"  # hopefully defined by FOREMAN_PASSWORD
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"  # hopefully defined by FOREMAN_VALIDATE_CERTS
+  loop:
+  - name: activation_keys
+  - name: content_credentials
+  - name: gpg_keys
+  - name: products
+  - name: sync_plans
+#  - name: upstream_subscriptions  # HTTPError: 400 Client Error: Bad Request
+  register: __satinfo_organizations_res
+- name: output the gathered Satellite information
+  debug:
+    var: __satinfo_organizations_res
