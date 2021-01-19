@@ -7,6 +7,6 @@
     description: "{{ item.description | default(omit) }}"
     locations: "{{ item.locations }}"
     organizations: "{{ item.organizations }}"
-    dns_proxy: "{{ satellite_fqdn | default(omit) }}"
+    dns_proxy: "{{ item.dns_proxy | default(omit) }}"
     state: "{{ satellite_state }}"
   with_items: "{{ satellite_domains }}"
