@@ -28,14 +28,6 @@ satellite_kickstart_repository: "Red Hat Enterprise Linux 7 Server Kickstart x86
 satellite_state: "present"
 satellite_auto_publish: "true"
 
-# satellite_organizations:
-#   - name: Default
-#     description: default organization
-
-# satellite_locations:
-#   - name: Default
-#     description: default location
-
 # satellite_host_collections:
 #   - name: KVMHOSTS_HC
 #     description: "physical KVM servers"
