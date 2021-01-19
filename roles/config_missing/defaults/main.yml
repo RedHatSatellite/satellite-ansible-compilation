@@ -1,0 +1,65 @@
+satellite_state: present
+
+# satellite_organizations:
+#   - name: Org1
+
+# satellite_locations:
+#   - name: Loc1
+#     organizations:
+#       - Org1
+
+# satellite_repository_sets:
+#   - organization: "{{ satellite_organization }}"
+#     label: rhel-7-server-rpms
+#     repositories:
+#       - releasever: 7Server
+#         basearch: x86_64
+#   - organization: "{{ satellite_organization }}"
+#     label: rhel-7-server-kickstart
+#     repositories:
+#       - releasever: "7.7"
+#         basearch: x86_64
+#       - releasever: "7.8"
+#         basearch: x86_64
+#       - releasever: "7.9"
+#         basearch: x86_64
+#   - organization: "{{ satellite_organization }}"
+#     label: rhel-7-server-ansible-2.8-rpms
+#     all_repositories: true
+
+# satellite_content_view_versions:
+#   - organization: "{{ satellite_organization }}"
+#     content_view: capsule
+#     version: 1.0
+
+# satellite_sync_plans:
+#   - organization: "{{ satellite_organization }}"
+#     name: RHEL
+#     description: RHEL Repos Only
+#     enabled: true
+#     interval: daily
+#     sync_date: 2020-03-31 00:00:00 UTC
+#     products:
+#       - Red Hat Enterprise Linux for x86_64
+#       - Red Hat Enterprise Linux Server
+#   - organization: "{{ satellite_organization }}"
+#     name: RH_Products
+#     description: All Red Hat Products except RHEL
+#     enabled: true
+#     interval: daily
+#     sync_date: 2020-03-31 01:00:00 UTC
+#     products:
+#       - Red Hat Ansible Engine
+#       - Red Hat Ceph Storage
+#       - Red Hat Ceph Storage MON
+#       - Red Hat Ceph Storage OSD
+#       - Red Hat Enterprise Linux Advanced Virtualization
+#       - Red Hat Enterprise Linux Fast Datapath
+#       - Red Hat Enterprise Linux High Availability for x86_64
+#       - Red Hat OpenStack
+#       - Red Hat Satellite Capsule
+#       - Red Hat Software Collections (for RHEL Server)
+
+# satellite_settings:
+#   - name: template_sync_repo
+#     value: https://example.com/satellite-templates.git

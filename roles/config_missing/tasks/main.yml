@@ -1,0 +1,77 @@
+---
+- name: configure organizations
+  theforeman.foreman.organization:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    state: "{{ satellite_state }}"
+  loop: "{{ satellite_organizations }}"
+  when: satellite_organizations is defined
+
+- name: configure locations
+  theforeman.foreman.location:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    organizations: "{{ item.organizations }}"
+    state: "{{ satellite_state }}"
+  loop: "{{ satellite_locations }}"
+  when: satellite_locations is defined
+
+- name: configure repository sets
+  theforeman.foreman.repository_set:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ item.organization }}"
+    label: "{{ item.label }}"
+    all_repositories: "{{ item.all_repositories | default(omit) }}"
+    repositories: "{{ item.repositories | default(omit) }}"
+    state: "{{ item.state | default('enabled') }}"
+  loop: "{{ satellite_repository_sets }}"
+  when: satellite_repository_sets is defined
+
+- name: configure content view versions
+  theforeman.foreman.content_view_version:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ item.organization }}"
+    content_view: "{{ item.content_view }}"
+    current_lifecycle_environment: "{{ item.current_lifecycle_environment | default(omit) }}"
+    description: "{{ item.description | default(omit) }}"
+    force_promote: "{{ item.force_promote | default(omit) }}"
+    force_yum_metadata_regeneration: "{{ item.force_yum_metadata_regeneration | default(omit) }}"
+    lifecycle_environments: "{{ item.lifecycle_environments | default(omit) }}"
+    version: "{{ item.version | default(omit) }}"
+  loop: "{{ satellite_content_view_versions }}"
+  when: satellite_content_view_versions is defined
+
+- name: configure sync plans
+  theforeman.foreman.sync_plan:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    organization: "{{ item.organization }}"
+    name: "{{ item.name }}"
+    cron_expression: "{{ item.cron_expression | default(omit) }}"
+    description: "{{ item.description | default(omit) }}"
+    enabled: "{{ item.enabled }}"
+    interval: "{{ item.interval }}"
+    products: "{{ item.products | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+    sync_date: "{{ item.sync_date }}"
+  loop: "{{ satellite_sync_plans }}"
+  when: satellite_sync_plans is defined
+
+- name: configure settings
+  theforeman.foreman.setting:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_server_url }}"
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  loop: "{{ satellite_settings }}"
+  when: satellite_settings is defined
