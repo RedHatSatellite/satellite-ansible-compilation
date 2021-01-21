@@ -10,7 +10,7 @@
     name: "{{ satellite_remove_pkgs }}"
     state: absent
 
-- name: installing secuity Packages
+- name: installing security packages
   package:
     name: "{{ satellite_add_pkgs }}"
     state: present

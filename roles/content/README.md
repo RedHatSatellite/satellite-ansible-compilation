@@ -29,6 +29,7 @@ satellite_rhn_connect: "{{ lookup('env', 'SATELLITE_RHN_CONNECT') }}"
 satellite_manifest_src: "{{ lookup('env','SATELLITE_MANIFEST_NAME') }}"
 satellite_manifest_dest: "/opt/satellite_manifest.zip"
 satellite_version: "{{ lookup('env', 'SATELLITE_VERSION') | mandatory }}"
+satellite_ansiver: "{{ satellite_ansible_map[satellite_version] | default(satellite_ansible_map['default']) }}"
 satellite_server_basearch: "x86_64"
 satellite_manifest_uuid: "{{ lookup('env', 'SATELLITE_MANIFEST_UUID') }}"
 # yamllint disable-line rule:line-length

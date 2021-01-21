@@ -10,9 +10,9 @@ name = Red Hat Satellite {{ satellite_version }} (for RHEL 7 Server) (RPMs)
 enabled = 1
 gpgcheck = 0
 
-[rhel-7-server-ansible-2.8-rpms]
+[rhel-7-server-ansible-{{ satellite_ansiver }}-rpms]
 baseurl = "{{ satellite_content_source }}/content/dist/rhel/server/7/7Server/x86_64/ansible/2.8/os/"
-name = Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server x86_64
+name = Red Hat Ansible Engine {{ satellite_ansiver }} RPMs for Red Hat Enterprise Linux 7 Server x86_64
 enabled = 1
 gpgcheck = 0
 

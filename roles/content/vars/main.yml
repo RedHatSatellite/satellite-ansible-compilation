@@ -1,1 +1,6 @@
 # vars file for content
+# dictionary to map the satellite_version to satellite_ansiver (see defaults)
+satellite_ansible_map:
+  "6.7": "2.8"
+  "6.8": "2.9"
+  "default": "2"  # fall back in case latest version of Satellite hasn't been
