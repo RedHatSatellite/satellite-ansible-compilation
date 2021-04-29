@@ -72,7 +72,7 @@ export SATELLITE_MANIFEST_NAME="/opt/manifest_example.zip"
 # https://access.redhat.com/articles/3047431
 # export SATELLITE_RHN_ORG=Activation Keys for Organization ID number
 
-# SATELLITE_POOL_ID=(CHANGE_ME)
+# export SATELLITE_RHN_POOL_ID=(CHANGE_ME)
 
 # SATELLITE_MANIFEST_UUID is the manifest uuid that is created on
 # access.redhat.com
