@@ -8,7 +8,16 @@
     state: present
   when: "'satellite' not in ansible_facts.packages"
 
-# copy template file with sceniario options and only run installer if changed
+- name: install | remove installer script and tuning yaml if forced install is wanted
+  file:
+    path: "{{ item }}"
+    state: absent
+  when: satellite_force_install|bool
+  loop:
+  - /root/satellite_install.sh
+  #- /etc/foreman-installer/custom-hiera.yaml  # TODO not enough, old version must be restored
+
+# copy template file with scenario options and only run installer if changed
 - name: install | copy installer script
   template:
     src: satellite_install.sh.j2
@@ -28,6 +37,7 @@
     owner: root
     group: root
   notify: activate_pref_tuning
+  when: false  # FIXME file is rejected by Satellite 6.8 because tuning option is no longer valid in PostgreSQL 9.5+
 
 - meta: flush_handlers
 

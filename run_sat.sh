@@ -1,16 +1,26 @@
 #!/bin/bash
-# run_sat.sh
+# run_sat.sh [...]
+# any argument given is passed to ansible-playbook
 
-# source required environmental variables
-if [[ -f /root/.sat_env.sh ]]
+# exit on error
+set -e
+
+# define default SAT_ENV_FILE if not given
+if [[ -z ${SAT_ENV_FILE} ]]
 then
-  echo "/root/.sat_env.sh"
-  source /root/.sat_env.sh
-else
-  echo "./sat_env.sh"
-  source ./sat_env.sh
+  if [[ -f ${HOME}/.sat_env.sh ]]
+  then
+    SAT_ENV_FILE=${HOME}/.sat_env.sh
+  elif [[ -f ./sat_env.sh ]]
+  then
+    SAT_ENV_FILE=./sat_env.sh
+  fi
 fi
 
+# source required environmental variables
+echo "Sourcing ${SAT_ENV_FILE}"
+source ${SAT_ENV_FILE}
+
 # run the plays/roles
-echo "playbooks/sat_install.yml"
-ansible-playbook playbooks/sat_install.yml
+echo "Running playbooks/sat_install.yml"
+ansible-playbook "$@" playbooks/sat_install.yml

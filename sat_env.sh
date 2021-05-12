@@ -31,17 +31,17 @@ export SATELLITE_ORGANIZATION="changeme_org"
 export SATELLITE_LOCATION="changeme_loc"
 
 # SATELLITE_ACCOUNT_ID is your Red Hat Account Number required for both
-# connected and disconneted installs
+# connected and disconnected installs
 export SATELLITE_ACCOUNT_ID='1234567'
 
-# SATELLITE_CONNECT variable is used to set the method of satellite installation
+# SATELLITE_RHN_CONNECT variable is used to set the method of satellite installation
 # - connected option is system is register to Red Hat's CDN and has access to
 #   the internet
 # - disconnect optinon is when the system does not have access to the
 #   internet
 # - master option is the same has connected but exports the rpm content for a
 #   disconnected satellite
-# SATELLITE_CONNECT={connected,disconnect, or master}
+# SATELLITE_RHN_CONNECT={connected,disconnect, or master}
 export SATELLITE_RHN_CONNECT="disconnect"
 
 # work in progress
@@ -62,6 +62,16 @@ export SATELLITE_MANIFEST_NAME="/opt/manifest_example.zip"
 
 # --- connected installs
 
+# SATELLITE_RHN_POOL_ID is the uuid of the pool providing the Satellite subscription
+# export SATELLITE_RHN_POOL_ID=(CHANGE_ME)
+
+# SATELLITE_MANIFEST_UUID is the manifest uuid that is created on
+# access.redhat.com
+# Manifest FAQ: https://access.redhat.com/articles/229083
+# export SATELLITE_MANIFEST_UUID=(CHANGEME-F4K3-UU1D-9h0i-1j2k3l4m5n60)
+
+# ---- with activation key
+
 # SATELLITE_RHN_AK Activation key is from access.redhat.com for connected
 # installs.  To Create an activation key on access.redhat.com:
 # https://access.redhat.com/articles/1378093
@@ -72,15 +82,17 @@ export SATELLITE_MANIFEST_NAME="/opt/manifest_example.zip"
 # https://access.redhat.com/articles/3047431
 # export SATELLITE_RHN_ORG=Activation Keys for Organization ID number
 
-# SATELLITE_POOL_ID=(CHANGE_ME)
-
-# SATELLITE_MANIFEST_UUID is the manifest uuid that is created on
-# access.redhat.com
-# Manifest FAQ: https://access.redhat.com/articles/229083
-# export SATELLITE_MANIFEST_UUID=(CHANGEME-F4K3-UU1D-9h0i-1j2k3l4m5n60)
+# ---- with user and password
 
 # User that has permission to register to Red Hat Network
 # export SATELLITE_RHN_USER= (access.redhat.com account)
 
 # User Password for the account
 # export SATELLITE_RHN_PASSWORD=(access.redhat.com account password)
+
+# -- subscription _within_ Satellite
+# so that an AK can be created by default, you need to define one subscription (or more) covering RHEL
+# It must be a list of dicts in YAML (or JSON) format, e.g. uncomment and adapt one of the following lines
+#export SATELLITE_SUBS_FOR_AK="[ {'name': 'Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)'} ]"
+#export SATELLITE_SUBS_FOR_AK="[ {'pool_id': '0123456789abcdef0123456789abcdef'} ]"           # aka Candlepin ID/UUID
+#export SATELLITE_SUBS_FOR_AK="[ {'upstream_pool_id': '0123456789abcdef0123456789abcdef'} ]"  # aka Master Pools

@@ -1,0 +1,6 @@
+# ignore my own (local) files
+*[._]myown[._]*
+
+# ignore all kind of temporary and backup files
+.*.swp
+*~

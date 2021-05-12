@@ -1,1 +1,15 @@
+---
 # Vars for rhsm
+# dictionary to map the satellite_version to satellite_ansiver (see defaults)
+satellite_ansible_map:
+  "6.7": "2.8"
+  "6.8": "2.9"
+  "default": "2"  # fall back in case latest version of Satellite hasn't been
+
+# list of repos required to install Satellite
+rhsm_required_repos:
+- rhel-{{ ansible_distribution_major_version }}-server-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-satellite-{{ satellite_version }}-rpms
+- rhel-server-rhscl-{{ ansible_distribution_major_version }}-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-satellite-maintenance-6-rpms
+- rhel-{{ ansible_distribution_major_version }}-server-ansible-{{ satellite_ansiver }}-rpms

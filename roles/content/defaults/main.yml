@@ -11,6 +11,7 @@ satellite_manifest_src: "{{ lookup('env','SATELLITE_MANIFEST_NAME') }}"
 satellite_manifest_dest: "/opt/satellite_manifest.zip"
 satellite_version: "{{ lookup('env', 'SATELLITE_VERSION') | mandatory }}"
 satellite_rhelver: "{{ lookup('env', 'SATELLITE_RHELVER') | mandatory }}"
+satellite_ansiver: "{{ satellite_ansible_map[satellite_version] | default(satellite_ansible_map['default']) }}"
 satellite_server_basearch: "x86_64"
 satellite_manifest_uuid: "{{ lookup('env', 'SATELLITE_MANIFEST_UUID') }}"
 # yamllint disable-line rule:line-length
@@ -60,7 +61,7 @@ satellite_rhel7_product:
       - basearch: "{{ satellite_server_basearch }}"
 
   # yamllint disable-line rule:line-length
-  - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server"
-    label: rhel-7-server-ansible-2.8-rpms
+  - name: "Red Hat Ansible Engine {{ satellite_ansiver }} RPMs for Red Hat Enterprise Linux 7 Server"
+    label: rhel-7-server-ansible-{{ satellite_ansiver }}-rpms
     repos:
       - basearch: "{{ satellite_server_basearch }}"

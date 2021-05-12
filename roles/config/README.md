@@ -41,6 +41,7 @@ satellite_organization: "{{ lookup('env', 'SATELLITE_ORGANIZATION') | mandatory 
 satellite_location: "{{ lookup('env', 'SATELLITE_LOCATION') | mandatory }}"
 satellite_version: "{{ lookup('env', 'SATELLITE_VERSION') | mandatory }}"
 satellite_rhelver: "{{ lookup('env', 'SATELLITE_RHELVER') | mandatory }}"
+satellite_ansiver: "{{ satellite_ansible_map[satellite_version] | default(satellite_ansible_map['default']) }}"
 satellite_fqdn: "{{ ansible_fqdn }}"
 satellite_server_url: "https://{{ ansible_fqdn }}"
 satellite_server_basearch: "x86_64"
@@ -67,7 +68,7 @@ satellite_content_views:
   - name: RHEL7Ansible_CV
     repositories:
       # yamllint disable-line rule:line-length
-      - name: "Red Hat Ansible Engine 2.8 RPMs for Red Hat Enterprise Linux 7 Server x86_64"
+      - name: "Red Hat Ansible Engine {{ satellite_ansiver }} RPMs for Red Hat Enterprise Linux 7 Server x86_64"
         product: "Red Hat Ansible Engine"
 
   - name: RHEL7SatTools_CV
@@ -123,7 +124,7 @@ satellite_activation_keys:
       - name: "CHANGEME"
         #- name: "Red Hat Enterprise Linux Server with Smart Management, Standard (Physical or Virtual Nodes)"
     content_overrides:
-      - label: rhel-7-server-ansible-2.8-rpms
+      - label: rhel-7-server-ansible-{{ satellite_ansiver }}-rpms
         override: enabled
       - label: rhel-7-server-extras-rpms
         override: enabled
