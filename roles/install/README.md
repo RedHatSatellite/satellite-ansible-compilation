@@ -21,6 +21,7 @@ satellite_admin_password: "{{ lookup('env', 'SATELLITE_PASSWORD') }}"
 satellite_organization: "{{ lookup('env', 'SATELLITE_ORGANIZATION') }}"
 satellite_location: "{{ lookup('env', 'SATELLITE_LOCATION') }}"
 satellite_server_url: "https://{{ ansible_fqdn }}"
+satellite_custom_hiera: "files/custom-hiera.yaml"
 
 
 # satellite install role options:

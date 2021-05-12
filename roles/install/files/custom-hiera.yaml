@@ -19,7 +19,6 @@ postgresql::server::config_entries:
   max_connections: 1000
   shared_buffers: 4GB
   work_mem: 4MB
-  checkpoint_segments: 32
   checkpoint_completion_target: 0.9
   effective_cache_size: 16GB
   autovacuum_vacuum_cost_limit: 2000
