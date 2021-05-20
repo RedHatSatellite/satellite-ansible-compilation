@@ -1,0 +1,48 @@
+---
+
+- name: get secondary type of information from Satellite (smart_proxies)
+  theforeman.foreman.resource_info:
+    full_details: "{{ item.full_details | default(satinfo_full_details) }}"
+    organization: "{{ item.organization | default(omit) }}"  # not all queries accept scoping
+    params: "{{ {'smart_proxy_id': __satinfo_secondary_item.id} | combine (item.params | default({})) }}"
+    search: "{{ item.search | default(omit) }}"
+    resource: "{{ item.name }}"
+    server_url: "{{ satellite_server_url | default(omit) }}"  # hopefully defined by FOREMAN_SERVER_URL
+    username: "{{ satellite_username | default(omit) }}"  # hopefully defined by FOREMAN_USERNAME
+    password: "{{ satellite_password | default(omit) }}"  # hopefully defined by FOREMAN_PASSWORD
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"  # hopefully defined by FOREMAN_VALIDATE_CERTS
+  loop:
+  - name: autosign  # KeyError: \"missing param 'smart_proxy_id' in parameters\""
+  register: __satinfo_smart_proxies_res
+- name: output the gathered Satellite information (smart_proxies)
+  debug:
+    var: __satinfo_smart_proxies_res
+
+#  - name: compute_attributes  # KeyError: \"missing param 'compute_resource_id' in parameters\""
+#  - name: content_view_components  # MissingArgumentsError: The following required parameters are missing: composite_content_view_id"
+#  - name: content_view_filter_rules  # MissingArgumentsError: The following required parameters are missing: content_view_filter_id"
+#  - name: content_view_filters  # MissingArgumentsError: The following required parameters are missing: content_view_id"
+#  - name: content_view_puppet_modules  # MissingArgumentsError: The following required parameters are missing: content_view_id"
+#  - name: external_usergroups  # MissingArgumentsError: The following required parameters are missing: usergroup_id"
+#  - name: foreign_input_sets  # MissingArgumentsError: The following required parameters are missing: template_id"
+#  - name: template_inputs  # MissingArgumentsError: The following required parameters are missing: template_id"
+#  - name: host_classes  # KeyError: \"missing param 'host_id' in parameters\""
+#  - name: host_debs  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: host_errata  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: host_module_streams  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: host_packages  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: host_subscriptions  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: host_tracer  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: interfaces  # MissingArgumentsError: The following required parameters are missing: host_id"
+#  - name: hostgroup_classes  # KeyError: \"missing param 'hostgroup_id' in parameters\""
+#  - name: images  # KeyError: \"missing param 'operatingsystem_id' in parameters\""
+#  - name: os_default_templates  # KeyError: \"missing param 'provisioning_template_id' in parameters\""
+#  - name: template_combinations  # KeyError: \"missing param 'provisioning_template_id' in parameters\""
+#  - name: override_values  # KeyError: \"missing param 'smart_class_parameter_id' in parameters\""
+#  - name: parameters  # KeyError: \"missing param 'subnet_id' in parameters\""
+#  - name: personal_access_tokens  # MissingArgumentsError: The following required parameters are missing: user_id"
+#  - name: ssh_keys  # MissingArgumentsError: The following required parameters are missing: user_id"
+#  - name: table_preferences  # KeyError: \"missing param 'user_id' in parameters\""
+#  - name: sync  # KeyError: \"missing param 'repository_id' in parameters\""
+#  - name: content_view_histories  # MissingArgumentsError: The following required parameters are missing: id"
+#  - name: tasks  # KeyError: \"missing param 'id' in parameters\""

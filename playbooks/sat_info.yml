@@ -1,0 +1,131 @@
+---
+# Example of usage to create all the VMs in the inventory, without
+# setting up again the libvirt host:
+# ansible-playbook -i inventory libvirt_domain_create.yml --tags virtual_machines -K
+
+- name: setup the libvirt hosts for libvirt automation
+  hosts: satellites
+  gather_facts: false
+
+  vars:
+    satinfo_full_details: false
+
+  tasks:
+
+  - name: get primary type of information from Satellite
+    theforeman.foreman.resource_info:
+      full_details: "{{ item.full_details | default(satinfo_full_details) }}"
+      organization: "{{ item.organization | default(omit) }}"  # not all queries accept scoping
+      params: "{{ item.params | default(omit) }}"  # not all queries accept params
+      search: "{{ item.search | default(omit) }}"
+      resource: "{{ item.name }}"
+      server_url: "{{ satellite_server_url | default('https://' + inventory_hostname) }}"  # hopefully defined by FOREMAN_SERVER_URL
+      username: "{{ satellite_username | default(omit) }}"  # hopefully defined by FOREMAN_USERNAME
+      password: "{{ satellite_password | default(omit) }}"  # hopefully defined by FOREMAN_PASSWORD
+      validate_certs: "{{ satellite_validate_certs | default(omit) }}"  # hopefully defined by FOREMAN_VALIDATE_CERTS
+    loop:
+    - name: ansible_collections
+    - name: ansible_roles
+    - name: ansible_variables
+    - name: architectures
+    - name: arf_reports
+    - name: audits
+    - name: auth_source_externals
+    - name: auth_source_internals
+    - name: auth_source_ldaps
+    - name: auth_sources
+    - name: bookmarks
+    - name: capsules
+    - name: common_parameters
+    - name: compute_profiles
+    - name: compute_resources
+    - name: config_groups
+    - name: config_reports
+    - name: configs
+    - name: content_view_versions
+    - name: content_views
+    - name: debs
+    - name: discovered_hosts
+    - name: discovery_rules
+    - name: docker_manifest_lists
+    - name: docker_manifests
+    - name: docker_tags
+    - name: domains
+    - name: environments
+    #TODO- name: errata  # takes some time
+    - name: fact_values
+    - name: file_units
+    - name: filters
+    - name: foreman_tasks
+    - name: host_collections
+    - name: hostgroups
+    - name: hosts
+    - name: http_proxies
+    - name: job_invocations
+    - name: job_templates
+    - name: lifecycle_environments
+    - name: locations
+    - name: mail_notifications
+    - name: media
+    - name: models
+    - name: module_streams
+    - name: operatingsystems
+    - name: organizations
+    - name: ostree_branches
+    - name: package_groups
+    #TODO- name: packages  # takes a long time
+    - name: permissions
+    - name: plugins
+    - name: policies
+    - name: provisioning_templates
+    - name: ptables
+    - name: puppet_modules
+    - name: puppetclasses
+    - name: realms
+    - name: recurring_logics
+    - name: remote_execution_features
+    - name: report_templates
+    - name: repositories
+    - name: roles
+    - name: scap_content_profiles
+    - name: scap_contents
+    - name: settings
+    - name: smart_class_parameters
+    - name: smart_proxies
+    - name: srpms
+    - name: subnets
+    - name: subscriptions
+    - name: tailoring_files
+    - name: template_kinds
+    - name: trends
+    - name: usergroups
+    - name: users
+    register: __satinfo_primary_res
+  - name: output the gathered Satellite information
+    debug:
+      var: __satinfo_primary_res
+
+# FIXME: what about 'registries' listed in the module examples? Error: Satellite doesn't know about those
+
+  - name: get secondary type of information from Satellite
+    include_tasks:
+      file: tasks/sat_info_secondary.yml
+    loop_control:
+      loop_var: __satinfo_primary_item
+    loop:
+    - organizations
+    - smart_proxies
+    - compute_resources
+    - composite_content_views
+    - filters  # content_view_filters?
+    - content_views
+    - usergroups
+    - templates
+    - hosts
+    - hostgroups
+    - operatingsystems
+    - provisioning_templates
+    - smart_class_parameters
+    - subnets
+    - users
+    - repositories

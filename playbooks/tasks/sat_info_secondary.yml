@@ -1,0 +1,10 @@
+---
+- name: get secondary type of information from Satellite ({{ __satinfo_primary_item }})
+  include_tasks:
+    file: tasks/sat_info_{{ __satinfo_primary_item }}.yml
+  loop_control:
+    label: "{{ __satinfo_secondary_item.name }}"
+    loop_var: __satinfo_secondary_item
+  loop: "{{ __satinfo_primary_res | json_query(__satinfo_js_query) }}"
+  vars:
+    __satinfo_js_query: "results[?item.name == '{{ __satinfo_primary_item }}'].resources[]"
